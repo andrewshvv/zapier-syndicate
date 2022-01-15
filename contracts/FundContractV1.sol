@@ -3,13 +3,11 @@ pragma solidity ^0.8.0;
 
 import "./NftFactoryV1.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-
-// import "./NftFactoryV1.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 
 
-contract FundContractV1 {
+contract FundContractV1 is ReentrancyGuard {
 
     string public Name = "FundContractV1";
 
@@ -19,7 +17,7 @@ contract FundContractV1 {
 
     Counters.Counter private fundType_;
 
-    constructor(NftFactoryV1  NftFactoryV1_) payable{
+    constructor(NftFactoryV1  NftFactoryV1_) ReentrancyGuard() payable{
         nftFactoryV1 = NftFactoryV1_;
     }
 
@@ -126,7 +124,7 @@ contract FundContractV1 {
         return matchedFundTypes;
     }
 
-    function getFunding(uint256 credential_, uint256 fundType) external {
+    function getFunding(uint256 credential_, uint256 fundType_) nonReentrant external {
 
         //Ownership verification
         address ownerAddress = nftFactoryV1.ownerOf(credential_);
@@ -136,7 +134,7 @@ contract FundContractV1 {
         bytes4 identifier = nftFactoryV1.getIdentifiers(credential_);
         for(uint256 indexOFfundType=0 ; indexOFfundType<AllFundDetails.length; indexOFfundType++){
 
-                if(fundType == AllFundDetails[indexOFfundType].fundType){
+                if(fundType_ == AllFundDetails[indexOFfundType].fundType){
 
                      if(identifier == AllFundDetails[indexOFfundType].credentailsUsed){
                          
@@ -148,16 +146,16 @@ contract FundContractV1 {
                              AllFundDetails[indexOFfundType].totalAmountDeposited - AllFundDetails[indexOFfundType].totalAmountDisbursed > 
                              AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam,
                              "Not Enough Fund to withdraw"
-                         );
-
-                        payable(msg.sender).transfer(AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam);
+                         );     
 
                         AllFundDetails[indexOFfundType].totalAmountDisbursed = 
                             AllFundDetails[indexOFfundType].totalAmountDisbursed + AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam;
 
                         amountDisbursedFromFundByaTeam[AllFundDetails[indexOFfundType].fundType][msg.sender] = AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam;
+
+                        payable(msg.sender).transfer(AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam);
                         
-                        emit transfer(msg.sender,AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam, "Founding Team Collected" );
+                        emit transfer(msg.sender,AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam, "Founding Team withdrawn" );
 
                         break;
                     }
