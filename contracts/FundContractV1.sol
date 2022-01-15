@@ -2,16 +2,14 @@
 pragma solidity ^0.8.0;
 
 import "./NftFactoryV1.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 // import "./NftFactoryV1.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 // import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
 
 
 
-contract FundContractV1 is Ownable{
+contract FundContractV1 {
 
     string public Name = "FundContractV1";
 

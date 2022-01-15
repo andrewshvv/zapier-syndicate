@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/sivaganeshanb/Desktop/Ethereum/hackproj/contract/contracts/FundContractV1.sol": {
-      "lastModificationDate": 1642235761755,
-      "contentHash": "8ba0de76b265492a6026ff0492a89840",
+      "lastModificationDate": 1642237791565,
+      "contentHash": "fa416da5a723febccca0a7e6ee4bc330",
       "sourceName": "contracts/FundContractV1.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -30,7 +30,6 @@
       },
       "imports": [
         "./NftFactoryV1.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/utils/Counters.sol"
       ],
       "versionPragmas": [
