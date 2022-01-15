@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-//import "./NftFactoryV1.sol";
-//import "@openzeppelin/contracts/access/Ownable.sol";
-//import "@openzeppelin/contracts/utils/Counters.sol";
-
 import "./NftFactoryV1.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
+// import "./NftFactoryV1.sol";
+// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
+// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
 
 
 
@@ -21,7 +21,7 @@ contract FundContractV1 is Ownable{
 
     Counters.Counter private fundType_;
 
-    constructor(NftFactoryV1  NftFactoryV1_) public {
+    constructor(NftFactoryV1  NftFactoryV1_) payable{
         nftFactoryV1 = NftFactoryV1_;
     }
 
@@ -46,6 +46,8 @@ contract FundContractV1 is Ownable{
     mapping(uint256=>mapping(address => uint256)) grantProvidedToFundByanInvestor;
 
     event deposit(address indexed sender, uint256 amount, string message);
+
+    event transfer(address indexed to, uint256 amount , string message);
 
     function createFund(
         string memory name_, 
@@ -89,7 +91,7 @@ contract FundContractV1 is Ownable{
         );
 
         bool isDeposited = false;
-        for(uint256 index =1; index < AllFundDetails.length; index++){
+        for(uint256 index =0; index < AllFundDetails.length; index++){
             if(AllFundDetails[index].fundType == fundType_){
                 AllFundDetails[index].totalAmountDeposited = AllFundDetails[index].totalAmountDeposited + msg.value;
                 grantProvidedToFundByanInvestor[fundType_][msg.sender] = 
@@ -111,7 +113,7 @@ contract FundContractV1 is Ownable{
             require(ownerAddress == msg.sender, "Credentails not owned by msg.sender");
         }
         //return matched funddetails 
-        uint256[] memory matchedFundTypes ;
+        uint256[] memory matchedFundTypes = new uint256[](AllFundDetails.length);
         for(uint256 index=0 ; index<credentialLength ; index++){
             bytes4 identifier = nftFactoryV1.getIdentifiers(credentials_[index]);
 
@@ -141,20 +143,24 @@ contract FundContractV1 is Ownable{
                      if(identifier == AllFundDetails[indexOFfundType].credentailsUsed){
                          
                          require(
-                             grantProvidedToFundByanInvestor[indexOFfundType][msg.sender] <= 0,
+                             amountDisbursedFromFundByaTeam[AllFundDetails[indexOFfundType].fundType][msg.sender] == 0,
                              "Already Withdrawed for this fund"
                          );
                          require(
                              AllFundDetails[indexOFfundType].totalAmountDeposited - AllFundDetails[indexOFfundType].totalAmountDisbursed > 
                              AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam,
-                             "Not Enough Fund"
+                             "Not Enough Fund to withdraw"
                          );
+
+                        payable(msg.sender).transfer(AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam);
 
                         AllFundDetails[indexOFfundType].totalAmountDisbursed = 
                             AllFundDetails[indexOFfundType].totalAmountDisbursed + AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam;
 
-                        grantProvidedToFundByanInvestor[indexOFfundType][msg.sender] = AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam;
-                        payable(msg.sender).transfer(AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam);
+                        amountDisbursedFromFundByaTeam[AllFundDetails[indexOFfundType].fundType][msg.sender] = AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam;
+                        
+                        emit transfer(msg.sender,AllFundDetails[indexOFfundType].maxDistributableAmountPerTeam, "Founding Team Collected" );
+
                         break;
                     }
                 }
