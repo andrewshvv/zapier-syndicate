@@ -4,7 +4,7 @@
     <div class="col-lg-1">
       <img src="" />
     </div>
-    <div class="col-lg-9 title">
+    <div class="col-lg-8 title">
       <span>Zapier-Syndicate</span>
     </div>
     <div class="col-lg-2 metaBtn">
@@ -22,13 +22,16 @@
 </div>
 
 
-<div class="wrapper" role="main">
-  <div class="sidebar">
-
-  </div>
- <div class="mainBody">
-   <span>Router is here with two tabs</span>
-   <router-outlet></router-outlet>
+<div class="container" >
+ <div class="row justify-content-start navBar">
+   <div class="col-lg-1 selected">
+    <span >Funds</span>
+    
+   </div>
  </div>
-
+ <div class="row justify-content-start">
+   <div class="col-lg-12">
+    <router-outlet></router-outlet>
+   </div>
+ </div>
 </div>

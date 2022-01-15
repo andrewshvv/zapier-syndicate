@@ -53,6 +53,19 @@ body {
     }
 }
 
+.navBar {
+    padding: 20px 0px 0px 0px;
+    border-bottom: 1px solid #b9b8b8;
+    // background-color: #a7acbf;
+
+    .selected {
+        border-bottom: 3px solid #3f8be4;
+    }
+    span {
+        
+        font-weight: 500;
+    }
+}
 .wrapper{
     display: flex;
     width: 100%;
@@ -68,9 +81,4 @@ body {
         color: #fff;
         // transition: all 0.3s; 
     }
-}
-
-
-.mainBody{
-
 }

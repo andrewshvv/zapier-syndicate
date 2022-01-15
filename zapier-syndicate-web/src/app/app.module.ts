@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { FundsModule } from './funds/funds.module'
+
 import { Web3Service } from './web3.service';
 
 @NgModule({
@@ -12,6 +14,7 @@ import { Web3Service } from './web3.service';
     AppComponent
   ],
   imports: [
+    FundsModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule
