@@ -10,6 +10,15 @@ export class AppComponent implements OnInit {
 
   connectedToMetaMask: boolean = false;
 
+  connectedNetwork: string = '';
+  currentAccountBalance: number = 0;
+
+  networks: any = {
+    1: "Ethereum",
+    4: "Ethereum Rinkeby",
+    97: "Binance Smart Chain Testnet"
+  };
+
   constructor(private web3: Web3Service){}
 
   ngOnInit(): void {
@@ -26,6 +35,8 @@ export class AppComponent implements OnInit {
   public web3Changed(isConnected: boolean){
     if(isConnected){
       this.connectedToMetaMask = true;
+      this.getNetworkName(this.web3.getChainID());
+      this.getCurrentAccountBalance();
     }else{
       this.connectedToMetaMask = false;
     }
@@ -33,6 +44,19 @@ export class AppComponent implements OnInit {
 
   public metamaskConnect(){
     console.log("Metamask connect trigger");
-    // this.web3.connectToMetaMask();
+    this.web3.connectToMetaMask();
+  }
+
+  public getNetworkName(chainId: any){
+    if(chainId != undefined || chainId != ''){
+      this.connectedNetwork = this.networks[chainId];
+    }
+  }
+
+  public async getCurrentAccountBalance(){
+    this.currentAccountBalance = await this.web3.getAccountBalance().then((data: any) =>{
+      console.log(data);
+      return data;
+    });
   }
 }

@@ -3,7 +3,7 @@
 </div>
 <div class="container">
     <div class="row justify-content-center userDetails">
-        <ng-container>
+        <ng-container *ngIf="!connectedToMetaMask">
             <div class="row justify-content-center itemCenter">
                 <div class="col-lg-6 ">
                     <img src="../../assets/metamaskLogo.png" />
@@ -12,184 +12,118 @@
             <div class="row justify-content-center notConnected">
                 <div class="col-lg-6 itemCenter">
                     <span > To see the available funding you have to
-                        <span class="msg">Connect Metamask</span>
+                        <span class="msg" (click)="metamaskConnect()" >Connect Metamask</span>
                     </span>
                 </div>
                 
             </div>
         </ng-container>
-
+        <ng-container *ngIf="connectedToMetaMask">
+            <div class="col-lg-3 fundDets">
+                <div class="title">
+                    <span>Ethereum Global Hackaton Syndicate</span>
+                </div>
+                <div class="desc">
+                    <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
+                </div>
+                <div class="imgContainer">
+                    <ng-container> 
+                        <img class="img" src="../../assets/fundImg.png">
+                        <img class="img" src="../../assets/fundImg.png">
+                        <img class="img" src="../../assets/fundImg.png">
+                    </ng-container>
+                </div>
+                <div class="investDetail">
+                    <span class="desc"> Investment amount</span>
+                    <br/>
+                    <span class="amnt"> 5000 <span> DAI </span></span>
+    
+                </div>
+                <div class="currentInvest">
+                    <span class="desc"> Current deposits</span>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <span class="amnt"> 200K <span> DAI </span></span>
+                        </div>
+                        <div class="col-lg-6 maxAmnt">
+                            <span> 1M DAI - Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="creator">
+                    <span class="desc"> Created by </span>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img class="usrImg" src="../../assets/fundImg.png" />
+                            <span class="by"> gdb.eth </span>
+                        </div>
+                        <div class="col-lg-6">
+                           <button class="btn btn-primary getFundBtn"> Get Funding </button>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+        </ng-container>
     </div>
 </div>
 <div class="container otherFund">
     <div class="row pageDescriptor">
         <span> Other Funds</span>
     </div>
-    <div class="row align-start-start cards">
-        <div class="col-lg-3 fundDets">
-            <div class="title">
-                <span>Ethereum Global Hackaton Syndicate</span>
-            </div>
-            <div class="desc">
-                <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
-            </div>
-            <div class="imgContainer">
-                <ng-container> 
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                </ng-container>
-            </div>
-            <div class="investDetail">
-                <span class="desc"> Investment amount</span>
-                <br/>
-                <span class="amnt"> 5000 <span> DAI </span></span>
+    <div class="row align-start-start">
 
-            </div>
-            <div class="currentInvest">
-                <span class="desc"> Current deposits</span>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <span class="amnt"> 200K <span> DAI </span></span>
-                    </div>
-                    <div class="col-lg-6 maxAmnt">
-                        <span> 1M DAI - Max</span>
-                    </div>
+        <ng-container *ngIf="otherFunds.length == 0">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 itemCenter">
+                    <span> No other Funds Available.</span>
                 </div>
             </div>
-            <div class="creator">
-                <span class="desc"> Created by </span>
-                <br/>
-                <div>
-                    <img class="usrImg" src="../../assets/fundImg.png" />
-                    <span class="by"> gdb.eth </span>
+        </ng-container>
+        <ng-container *ngIf="otherFunds.length > 0">
+            <div class="col-lg-3 fundDets">
+                <div class="title">
+                    <span>Ethereum Global Hackaton Syndicate</span>
                 </div>
-            </div>
-
-        </div>
-        <div class="col-lg-3 fundDets">
-            <div class="title">
-                <span>Ethereum Global Hackaton Syndicate</span>
-            </div>
-            <div class="desc">
-                <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
-            </div>
-            <div class="imgContainer">
-                <ng-container> 
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                </ng-container>
-            </div>
-            <div class="investDetail">
-                <span class="desc"> Investment amount</span>
-                <br/>
-                <span class="amnt"> 5000 <span> DAI </span></span>
-
-            </div>
-            <div class="currentInvest">
-                <span class="desc"> Current deposits</span>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <span class="amnt"> 200K <span> DAI </span></span>
-                    </div>
-                    <div class="col-lg-6 maxAmnt">
-                        <span> 1M DAI - Max</span>
+                <div class="desc">
+                    <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
+                </div>
+                <div class="imgContainer">
+                    <ng-container> 
+                        <img class="img" src="../../assets/fundImg.png">
+                        <img class="img" src="../../assets/fundImg.png">
+                        <img class="img" src="../../assets/fundImg.png">
+                    </ng-container>
+                </div>
+                <div class="investDetail">
+                    <span class="desc"> Investment amount</span>
+                    <br/>
+                    <span class="amnt"> 5000 <span> DAI </span></span>
+    
+                </div>
+                <div class="currentInvest">
+                    <span class="desc"> Current deposits</span>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <span class="amnt"> 200K <span> DAI </span></span>
+                        </div>
+                        <div class="col-lg-6 maxAmnt">
+                            <span> 1M DAI - Max</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="creator">
-                <span class="desc"> Created by </span>
-                <br/>
-                <div>
-                    <img class="usrImg" src="../../assets/fundImg.png" />
-                    <span class="by"> gdb.eth </span>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-3 fundDets">
-            <div class="title">
-                <span>Ethereum Global Hackaton Syndicate</span>
-            </div>
-            <div class="desc">
-                <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
-            </div>
-            <div class="imgContainer">
-                <ng-container> 
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                </ng-container>
-            </div>
-            <div class="investDetail">
-                <span class="desc"> Investment amount</span>
-                <br/>
-                <span class="amnt"> 5000 <span> DAI </span></span>
-
-            </div>
-            <div class="currentInvest">
-                <span class="desc"> Current deposits</span>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <span class="amnt"> 200K <span> DAI </span></span>
-                    </div>
-                    <div class="col-lg-6 maxAmnt">
-                        <span> 1M DAI - Max</span>
+                <div class="creator">
+                    <span class="desc"> Created by </span>
+                    <br/>
+                    <div>
+                        <img class="usrImg" src="../../assets/fundImg.png" />
+                        <span class="by"> gdb.eth </span>
                     </div>
                 </div>
+    
             </div>
-            <div class="creator">
-                <span class="desc"> Created by </span>
-                <br/>
-                <div>
-                    <img class="usrImg" src="../../assets/fundImg.png" />
-                    <span class="by"> gdb.eth </span>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-3 fundDets">
-            <div class="title">
-                <span>Ethereum Global Hackaton Syndicate</span>
-            </div>
-            <div class="desc">
-                <span> Syndicate for founders who have won the first place in one of two categories: defi tools and lending </span>
-            </div>
-            <div class="imgContainer">
-                <ng-container> 
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                    <img class="img" src="../../assets/fundImg.png">
-                </ng-container>
-            </div>
-            <div class="investDetail">
-                <span class="desc"> Investment amount</span>
-                <br/>
-                <span class="amnt"> 5000 <span> DAI </span></span>
-
-            </div>
-            <div class="currentInvest">
-                <span class="desc"> Current deposits</span>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <span class="amnt"> 200K <span> DAI </span></span>
-                    </div>
-                    <div class="col-lg-6 maxAmnt">
-                        <span> 1M DAI - Max</span>
-                    </div>
-                </div>
-            </div>
-            <div class="creator">
-                <span class="desc"> Created by </span>
-                <br/>
-                <div>
-                    <img class="usrImg" src="../../assets/fundImg.png" />
-                    <span class="by"> gdb.eth </span>
-                </div>
-            </div>
-
-        </div>
+        </ng-container>
 
     </div>
 </div>

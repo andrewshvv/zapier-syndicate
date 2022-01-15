@@ -7,15 +7,16 @@
     <div class="col-lg-8 title">
       <span>Zapier-Syndicate</span>
     </div>
-    <div class="col-lg-2 metaBtn">
-      <ng-container *ngIf="connectedToMetaMask">
+    <div class="col-lg-3 metaBtn">
+      <ng-container *ngIf="!connectedToMetaMask">
         <button type="button" class="btn btn-primary" (click)="metamaskConnect()">
           Connect to MetaMask</button>
       </ng-container>
-      <ng-container *ngIf="!connectedToMetaMask">
-        <button type="button" class="btn btn-primary">
-          Connected</button>
-        <span class="usrIdent"> 0.674 ETH  <span> gbd.eth</span> </span>
+      <ng-container *ngIf="connectedToMetaMask">
+        <span class="usrIdent">
+          <img class="networkLogo" src="../assets/ethereumLogo.png" /> {{connectedNetwork}} </span>
+        <!-- <button type="button" class="btn btn-primary"> {{connectedNetwork}}</button> -->
+        <span class="usrIdent"> {{currentAccountBalance}} ETH  </span>
       </ng-container>
     </div>
   </div>

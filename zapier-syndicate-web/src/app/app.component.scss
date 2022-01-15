@@ -33,21 +33,29 @@ body {
 
         .metaBtn {
             align-items: center;
-            padding-top: 3px;
+            padding: 10px;
 
             button {
-            color: #2e2f33;
-            background-color: #ff4f40;
-            border-color: #ff5040;
+                color: #2e2f33;
+                background-color: #ff4f40;
+                border-color: #ff5040;
             }
 
             .usrIdent {
-            border: 1px solid #b9b8b8;
-            padding: 4px;
-            height: 38px;
-            display: inline-block;
-            margin-left: 11px;
-            border-radius: 5px;
+                border: 1px solid #E8E8EF;
+                background-color: #E8E8EF;
+                padding: 4px;
+                height: 38px;
+                min-width: 120px;
+                display: inline-block;
+                margin-left: 11px;
+                border-radius: 5px;
+
+                .networkLogo {
+                    width: 20px;
+                    float: left;
+                    margin: 3px;
+                }
             }
         }
     }

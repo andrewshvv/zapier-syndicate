@@ -118,6 +118,14 @@ export class Web3Service {
             }
         });
     }
+
+    public getChainID() {
+        return parseInt(this.chainId, 16);
+    }
+
+    public getAccountBalance(){
+        return window.web3.eth.getBalance(this.activeAccount);
+    }
 /*
     // API to connect -as functions goes here
     // NFT Factory 
