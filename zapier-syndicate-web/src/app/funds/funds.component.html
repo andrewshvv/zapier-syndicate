@@ -44,7 +44,7 @@
                         <span class="desc"> Current deposits</span>
                         <div class="row">
                             <div class="col-lg-6">
-                                <span class="amnt"> {{fund.totalAmountDisbursed}}  <span> ETH </span></span>
+                                <span class="amnt">  {{parseFloat(fund.totalAmountDeposited) - parseFloat(fund.totalAmountDisbursed)}}  <span> ETH </span></span>
                             </div>
                             <div class="col-lg-6 maxAmnt">
                                 <span>  {{fund.totalAmountDeposited}}  ETH - Max</span>
@@ -110,7 +110,7 @@
                         <span class="desc"> Current deposits</span>
                         <div class="row">
                             <div class="col-lg-6">
-                                <span class="amnt"> {{fund.totalAmountDisbursed}} <span> ETH </span></span>
+                                <span class="amnt"> {{parseFloat(fund.totalAmountDeposited) - parseFloat(fund.totalAmountDisbursed)}} <span> ETH </span></span>
                             </div>
                             <div class="col-lg-6 maxAmnt">
                                 <span> {{fund.totalAmountDeposited}} ETH - Max</span>
