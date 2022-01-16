@@ -110,6 +110,12 @@
             .by{
                 font-size: 14px;
                 color: #3f8be4;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 93px;
+                display: inline-block;
+                direction: rtl;
             }
 
             .getFundBtn {
