@@ -19,7 +19,7 @@ import { Web3Service } from './web3.service';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [Web3Service],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

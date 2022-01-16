@@ -76,7 +76,7 @@ contract FundContractV1 {
             return newFundType;
         }
 
-    function getFundetails() external view returns(FundDetails[] memory){
+    function getFundDetails() external view returns(FundDetails[] memory){
 
         return  AllFundDetails;
     }

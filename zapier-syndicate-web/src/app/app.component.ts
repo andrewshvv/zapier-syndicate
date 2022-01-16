@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   networks: any = {
     1: "Ethereum",
     4: "Ethereum Rinkeby",
-    97: "Binance Smart Chain Testnet"
+    97: "Binance Smart Chain Testnet",
+    1337: "Ganache TestNet"
   };
 
   constructor(private web3: Web3Service){}
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit {
         this.web3Changed(false);
       }
     })
+
+    this.web3.connectToABI();
       
   }
 
@@ -54,9 +57,8 @@ export class AppComponent implements OnInit {
   }
 
   public async getCurrentAccountBalance(){
-    this.currentAccountBalance = await this.web3.getAccountBalance().then((data: any) =>{
-      console.log(data);
-      return data;
+    this.web3.getAccountBalance().then((data: any) =>{
+      this.currentAccountBalance = data;
     });
   }
 }

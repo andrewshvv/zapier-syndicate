@@ -16,7 +16,7 @@
         <span class="usrIdent">
           <img class="networkLogo" src="../assets/ethereumLogo.png" /> {{connectedNetwork}} </span>
         <!-- <button type="button" class="btn btn-primary"> {{connectedNetwork}}</button> -->
-        <span class="usrIdent"> {{currentAccountBalance}} ETH  </span>
+        <span (click)="getCurrentAccountBalance()" class="usrIdent"> {{currentAccountBalance}} ETH  </span>
       </ng-container>
     </div>
   </div>

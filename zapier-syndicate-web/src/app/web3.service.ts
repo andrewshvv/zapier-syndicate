@@ -1,6 +1,7 @@
 /**by Dinesh Selvam -  PheoDScop#3470*/
 import { BehaviorSubject } from "rxjs";
 import { environment } from '../environments/environment';
+import { Injectable } from "@angular/core";
 
 const Web3 = require('web3');
 var Contract = require('web3-eth-contract');
@@ -9,13 +10,16 @@ var Contract = require('web3-eth-contract');
  * Import contract abi (json) after deployment.
 */
 
-// import FundContractV1 from '../assets/FundContractV1.json';
-// import NftFactoryV1 from '../assets/NftFactoryV1.json';
+import FundContractV1 from '../assets/FundContractV1.json';
+import NftFactoryV1 from '../assets/NftFactoryV1.json';
 
 
 declare let require: any;
 declare let window: any;
 
+@Injectable({
+    providedIn: 'root'
+  })
 export class Web3Service {
     // web3 provider vars
     private readonly web3: any;
@@ -25,8 +29,8 @@ export class Web3Service {
     public activeAccount: any; // tracks what account address is currently used.
     public accounts = []; // metamask or other accounts address
 
-    public FundContractInstance: any;
-    public NftFactoryInstance: any;
+    private FundContractInstance: any;
+    private NftFactoryInstance: any;
 
 
     /** this Subject is like a Event fired. When wallet address (account) is changed then this gets fired.
@@ -76,6 +80,28 @@ export class Web3Service {
         }
     }
 
+    public async connectToABI() {
+
+        if(window.ethereum !== undefined){
+            // read contract abi
+            try {
+                // Contract abi connection codes goes here. 
+                // self.FundContractInstance = new Contract(FundContractV1.abi, environment.fundContractInstance);
+                this.FundContractInstance = new window.web3.eth.Contract(FundContractV1.abi, environment.fundContractInstance);
+                console.log("FundContractInstance: ",this.FundContractInstance);
+
+                // self.NftFactoryInstance = new Contract(NftFactoryV1.abi, environment.nftFactoryInstance);
+                this.NftFactoryInstance = new window.web3.eth.Contract(NftFactoryV1.abi, environment.nftFactoryInstance);
+                console.log("NftFactoryInstance: ",this.NftFactoryInstance);
+                
+            } catch (error) {
+                // Catch any errors for any of the above operations.
+                alert(`Failed to load web3, accounts contracts. Check console for details.`);
+                console.log(error);
+            }
+        } 
+    }
+
     public async connectToMetaMask(){
         const self: this = this;
 
@@ -100,22 +126,6 @@ export class Web3Service {
 
         }).catch((err: any)=>{
             console.log("Account Request failed", err);
-        }).then(()=>{
-
-            // read contract abi
-            try {
-                // Contract abi connection codes goes here. 
-                // self.FundContractInstance = new Contract(FundContractV1.abi, environment.fundContractInstance);
-                // console.log("FundContractInstance: ",self.FundContractInstance);
-
-                // self.NftFactoryInstance = new Contract(NftFactoryV1.abi, environment.nftFactoryInstance);
-                // console.log("NftFactoryInstance: ",self.NftFactoryInstance);
-                
-            } catch (error) {
-                // Catch any errors for any of the above operations.
-                alert(`Failed to load web3, accounts contracts. Check console for details.`);
-                console.log(error);
-            }
         });
     }
 
@@ -123,10 +133,17 @@ export class Web3Service {
         return parseInt(this.chainId, 16);
     }
 
-    public getAccountBalance(){
-        return window.web3.eth.getBalance(this.activeAccount);
+    public async getAccountBalance(){
+        let balance = await window.web3.eth.getBalance(this.activeAccount);
+        return Web3.utils.fromWei(balance, 'ether')
     }
-/*
+
+    //helpers
+    public convertToEther(amnt: any){
+        return Web3.utils.fromWei(amnt, 'ether');
+    }
+
+
     // API to connect -as functions goes here
     // NFT Factory 
     public getCredentials( address: string ) { //returns uint256 [] credentials
@@ -160,15 +177,14 @@ export class Web3Service {
     // Fund Contract 
     public createFund(name: string, description: string, distributionAmountPerTram: number, credentailsUsed: number) { //returns uint256 newFundType
         const self: this = this;
-        return self.FundContractInstance.methods.createFund(name, description, distributionAmountPerTram).send().then((data:any) =>{
+        return self.FundContractInstance.methods.createFund(name, description, distributionAmountPerTram, credentailsUsed).send().then((data:any) =>{
             return data;
         })
     }
 
-    public getFundetails() { //returns FundDetails[]
-        const self: this = this;
-        return self.FundContractInstance.methods.getFundetails().call().then((data:any) =>{
-            return data;
+    public getFundDetails() { //returns FundDetails[]
+        return this.FundContractInstance.methods.getFundDetails().call().then((result: []) =>{
+            return result;
         })
     } 
 
@@ -183,16 +199,16 @@ export class Web3Service {
 
     public evaluavateNFTCredentials(credentials: any) { //returns uint256[]
         const self: this = this;
-        return self.FundContractInstance.methods.evaluavateNFTCredentials(credentials).call().then((data:any) =>{
+        return self.FundContractInstance.methods.evaluavateNFTCredentials(credentials).call({from: this.activeAccount}).then((data:any) =>{
             return data;
         })
     } 
 
     public getFunding(credential: number,fundType: number) { //no return - will prob get some kinda success msg from contract
         const self: this = this;
-        return self.FundContractInstance.methods.evaluavateNFTCredentials(credential, fundType).send().then((data:any) =>{
+        return self.FundContractInstance.methods.getFunding(credential, fundType).send({from: this.activeAccount}).then((data:any) =>{
             return data;
         })
     } 
-*/
+
 }

@@ -53,7 +53,10 @@ import 'zone.js';  // Included with Angular CLI.
  */
 
  import { Buffer } from 'buffer';
-
+ declare var require: any;
  (window as any).global = window;
- (window as any).process = {env: { DEBUG: undefined }, };
+ (window as any).process = {
+     env: { DEBUG: undefined },
+     nextTick: require('next-tick')
+    } as any;
  (window as any).global.Buffer = Buffer || [];
