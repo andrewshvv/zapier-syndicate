@@ -39,6 +39,9 @@ export class Web3Service {
     private accountChangeSubject = new BehaviorSubject<string>("");
     accountChanged = this.accountChangeSubject.asObservable();
 
+    private getFundingSubject = new BehaviorSubject<string>("");
+    userFunded = this.getFundingSubject.asObservable();
+
     
     constructor(){
         if(window.ethereum === undefined){
@@ -207,6 +210,7 @@ export class Web3Service {
     public getFunding(credential: number,fundType: number) { //no return - will prob get some kinda success msg from contract
         const self: this = this;
         return self.FundContractInstance.methods.getFunding(credential, fundType).send({from: this.activeAccount}).then((data:any) =>{
+            this.getFundingSubject.next("userFunded");
             return data;
         })
     } 

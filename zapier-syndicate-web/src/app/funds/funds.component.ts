@@ -29,6 +29,18 @@ export class FundsComponent implements OnInit {
           }
       })
 
+      this.web3.userFunded.subscribe((data:any)=>{
+        if(data != undefined && data != ''){
+          this.otherFunds = [];
+          this.credentials = [];
+          this.validFunds = [];
+          this.userFunds = [];
+
+          this.getAllFunds();
+          this.getCredentials();
+        }
+    })
+
       this.getAllFunds();
     }
 

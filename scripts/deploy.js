@@ -69,18 +69,19 @@ async function main() {
       // await nft.addMinterRole(signer1.address);
       // await NftFactoryDeployed.connect(admin).addMinterRole(signer2);
 
-      await NftFactoryDeployed.mintAnItem("0xCcf55c742584e00187D28aa65891e153984e5343","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010010"));
-      await NftFactoryDeployed.mintAnItem("0xC0DA990721202FC6aA3c4D8F73909D25E992Ba12","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010232"));
+      await NftFactoryDeployed.mintAnItem("0xDB97C62141eDA11999975E5B1Eb9B4a634fD0F07","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010010"));
+      await NftFactoryDeployed.mintAnItem("0xD9ff162B1D6e7590F834a26b00679bFA556E0055","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010232"));
 
       // // added dummy data for Fund
       await FundContractDeployed.createFund("ETHGLOBAL", "NFT HACKATHON WINNERS", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
         console.log("created fund 1 by:");
       })
-      await FundContractDeployed.createFund("ETHGLOBAL", "WEB3 HACKATHON WINNERS", ethers.utils.parseEther("1.0"), ethers.utils.arrayify("0x00010232")).then((data)=>{
+      await FundContractDeployed.createFund("ETHGLOBAL", "WEB3 HACKATHON WINNERS", ethers.utils.parseEther("0.2"), ethers.utils.arrayify("0x00010232")).then((data)=>{
         console.log("created fund 2 by:");
       })
 
-      await FundContractDeployed.depositFund(1, { value: ethers.utils.parseEther("2") });
+      await FundContractDeployed.depositFund(1, { value: ethers.utils.parseEther("10") });
+      await FundContractDeployed.depositFund(2, { value: ethers.utils.parseEther("5") });
 
 
       // await FundContractDeployed.getFundDetails().then((data)=>{
