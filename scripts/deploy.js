@@ -73,15 +73,20 @@ async function main() {
       await NftFactoryDeployed.mintAnItem("0xD9ff162B1D6e7590F834a26b00679bFA556E0055","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010232"));
 
       // // added dummy data for Fund
-      await FundContractDeployed.createFund("ETHGLOBAL", "NFT HACKATHON WINNERS", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
+      await FundContractDeployed.createFund("EthGlobal Finalists", "Web3 hackers who is participated in EthGlobal hackathon and made it to the finalists round, can avail the deposited funds. Skill set inclusive of : Solidity, Hardahat, Truffle, Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
         console.log("created fund 1 by:");
       })
-      await FundContractDeployed.createFund("ETHGLOBAL", "WEB3 HACKATHON WINNERS", ethers.utils.parseEther("0.2"), ethers.utils.arrayify("0x00010232")).then((data)=>{
+      await FundContractDeployed.createFund("EthGlobal Participants", "Web3 hackers who participated in EthGlobal hackathon, can avail the deposited funds. Skill set inclusive of : Front End development Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00010232")).then((data)=>{
+        console.log("created fund 2 by:");
+      })
+   
+   await FundContractDeployed.createFund("EthGlobal Participants(Product owners)", "Web3 Product Owners who participated in EthGlobal hackathon, can avail the deposited funds. Skill set inclusive of : Product Management, Product Execution and Delivery ", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00010232")).then((data)=>{
         console.log("created fund 2 by:");
       })
 
       await FundContractDeployed.depositFund(1, { value: ethers.utils.parseEther("10") });
-      await FundContractDeployed.depositFund(2, { value: ethers.utils.parseEther("5") });
+      await FundContractDeployed.depositFund(2, { value: ethers.utils.parseEther("8") });
+      await FundContractDeployed.depositFund(3, { value: ethers.utils.parseEther("7") });
 
 
       // await FundContractDeployed.getFundDetails().then((data)=>{
