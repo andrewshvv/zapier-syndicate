@@ -29,8 +29,15 @@ export class AppComponent implements OnInit {
       }else{
         this.web3Changed(false);
       }
-    })
+    });
 
+    this.web3.userFunded.subscribe((data:any)=>{
+      if(data != undefined && data != ''){
+        this.getCurrentAccountBalance();
+      }
+
+    });
+    
     this.web3.connectToABI();
       
   }

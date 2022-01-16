@@ -4,11 +4,11 @@
  require("@nomiclabs/hardhat-waffle");
 
 
-const RINKEBY_RPC_URL= 'RPC url';
-const PRIVATE_KEY = 'cbebdfb5afb15ee2bcd3f2fc53012d964aa739238a3b9c9138b0db1abb7d43df';
+const RINKEBY_RPC_URL= 'https://rinkeby.infura.io/v3/3c0f5d523cc6404685b777cb62994527';
+const PRIVATE_KEY = '5af283d5d90a73d73a77cfc71c77032131d92d52131914c7a80b10c2b5bd3f0d';
 
 const GANACHE_RPC_URL = 'http://127.0.0.1:7545'
-const GANACHE_ACCOUNT_PRIVATE_KEY = '0c361a62191af2f880a4830004ebcc2e8fc3288fba94dcd3f835ec90be6cf4bf';
+const GANACHE_ACCOUNT_PRIVATE_KEY = 'c96b964d69a1917153e9422b2e529c99f5e54bbdaba45e20e33a4155e6689746';
 
 // const HARDHAT_RPC_URL = 'http://127.0.0.1:8545'
 // const HARDHAT_ADMIN_ACCOUNT_PRIVATE_KEY = 'eac1ff929671f05330eb13281ab5398228f07be6c44fb24ebfd92b7aec541140';

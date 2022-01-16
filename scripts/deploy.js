@@ -69,11 +69,11 @@ async function main() {
       // await nft.addMinterRole(signer1.address);
       // await NftFactoryDeployed.connect(admin).addMinterRole(signer2);
 
-      await NftFactoryDeployed.mintAnItem("0xDB97C62141eDA11999975E5B1Eb9B4a634fD0F07","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010010"));
-      await NftFactoryDeployed.mintAnItem("0xD9ff162B1D6e7590F834a26b00679bFA556E0055","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00030232"));
+      await NftFactoryDeployed.mintAnItem("0xDa796b3C5cd8b4DbB2B1356886d0cCF353Cf5b85","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010010"));
+      await NftFactoryDeployed.mintAnItem("0xD31D72172abF619350c473aafcc969E42A27E398","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00030232"));
 
       // // added dummy data for Fund
-      await FundContractDeployed.createFund("DAO Rabbit: Grant for solidity developers", "Grant for work on DAO XYZ outstanding open-source github issues for ethglobal hackathon participants with solidity development skills.", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
+      await FundContractDeployed.createFund("DAO Rabbit: Grant for solidity developers", "Grant for work on DAO RABBIT outstanding open-source github issues for ethglobal hackathon participants with solidity development skills.", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
         console.log("created fund 1 by:");
       })
       await FundContractDeployed.createFund("EthGlobal Participants", "Web3 hackers who are participated in EthGlobal hackathon, can avail from the deposited funds. Skill set inclusive of : Front End development Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00030232")).then((data)=>{
@@ -81,7 +81,7 @@ async function main() {
       })
    
    await FundContractDeployed.createFund("EthGlobal Participants(Product owners)", "Web3 Product Owners who are participated in EthGlobal hackathon, can avail from the deposited funds. Skill set inclusive of : Product Management, Product Execution and Delivery ", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00020232")).then((data)=>{
-        console.log("created fund 2 by:");
+        console.log("created fund 3 by:");
       })
 
       await FundContractDeployed.depositFund(1, { value: ethers.utils.parseEther("10") });

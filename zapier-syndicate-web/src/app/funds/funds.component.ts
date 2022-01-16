@@ -107,4 +107,8 @@ export class FundsComponent implements OnInit {
       })
     }
 
+    public getDifference(deposit: string, disbursed: string ){
+      return (parseFloat(deposit) - parseFloat(disbursed) ).toFixed(2);
+    }
+
 }

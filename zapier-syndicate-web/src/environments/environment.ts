@@ -1,6 +1,6 @@
 
         export const environment = {
           production: false,
-          fundContractInstance: '0xF324121C6B5A3AB07B2BCf9B44A730F352C4c300',
-          nftFactoryInstance: '0xDD3BF42f121e2720260588b8735cEBacDb0c7C3D'
+          fundContractInstance: '0x2DD4FfbCbc017914463b9637284E51E24482B767',
+          nftFactoryInstance: '0x94d2252e8FbC3F15Ae69451c54a83597028dEBa8'
         };
