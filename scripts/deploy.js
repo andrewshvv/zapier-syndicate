@@ -70,17 +70,17 @@ async function main() {
       // await NftFactoryDeployed.connect(admin).addMinterRole(signer2);
 
       await NftFactoryDeployed.mintAnItem("0xDB97C62141eDA11999975E5B1Eb9B4a634fD0F07","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010010"));
-      await NftFactoryDeployed.mintAnItem("0xD9ff162B1D6e7590F834a26b00679bFA556E0055","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00010232"));
+      await NftFactoryDeployed.mintAnItem("0xD9ff162B1D6e7590F834a26b00679bFA556E0055","https://ipfs.io/ipfs/bafybeibjxyehrtquuybuymgq5iuqll5nqgmqobmilt6fatbxtnpitxebt4/metadata_1.json",ethers.utils.arrayify("0x00030232"));
 
       // // added dummy data for Fund
-      await FundContractDeployed.createFund("EthGlobal Finalists", "Web3 hackers who is participated in EthGlobal hackathon and made it to the finalists round, can avail the deposited funds. Skill set inclusive of : Solidity, Hardahat, Truffle, Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
+      await FundContractDeployed.createFund("EthGlobal Finalists", "Web3 hackers who are participated in EthGlobal hackathon and made it to the finalists round, can avail from the deposited funds. Skill set inclusive of : Solidity, Hardahat, Truffle, Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.5"), ethers.utils.arrayify("0x00010010")).then((data)=>{
         console.log("created fund 1 by:");
       })
-      await FundContractDeployed.createFund("EthGlobal Participants", "Web3 hackers who participated in EthGlobal hackathon, can avail the deposited funds. Skill set inclusive of : Front End development Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00010232")).then((data)=>{
+      await FundContractDeployed.createFund("EthGlobal Participants", "Web3 hackers who are participated in EthGlobal hackathon, can avail from the deposited funds. Skill set inclusive of : Front End development Angular/React/Vue with web3.js ether.js", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00030232")).then((data)=>{
         console.log("created fund 2 by:");
       })
    
-   await FundContractDeployed.createFund("EthGlobal Participants(Product owners)", "Web3 Product Owners who participated in EthGlobal hackathon, can avail the deposited funds. Skill set inclusive of : Product Management, Product Execution and Delivery ", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00010232")).then((data)=>{
+   await FundContractDeployed.createFund("EthGlobal Participants(Product owners)", "Web3 Product Owners who are participated in EthGlobal hackathon, can avail from the deposited funds. Skill set inclusive of : Product Management, Product Execution and Delivery ", ethers.utils.parseEther("0.4"), ethers.utils.arrayify("0x00020232")).then((data)=>{
         console.log("created fund 2 by:");
       })
 
