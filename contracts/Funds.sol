@@ -158,8 +158,9 @@ contract Funds {
             "already withdrawn for this fund"
         );
 
+        console.log(fundDetails.currentBalance, fundDetails.fundingAmount);
         require(
-            fundDetails.currentBalance < fundDetails.fundingAmount,
+            fundDetails.currentBalance > fundDetails.fundingAmount,
             "not enough funds to withdraw"
         );
 

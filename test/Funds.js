@@ -63,7 +63,7 @@ describe("Funds: NFT contract test", () => {
 
     // Initialise fund with some funds
     fundIndex = await helperGetFundIndexById(fundContract, fundId);
-    await fundContract.connect(depositor).depositFunds(fundIndex, { value: 4 * fundingAmount });
+    await fundContract.connect(depositor).depositFunds(fundIndex, { value: fundingAmount.mul(4) });
 
   });
 
@@ -82,7 +82,7 @@ describe("Funds: NFT contract test", () => {
     expect(fundDetails.fundId).to.equal(1);
     expect(fundDetails.name).to.equal("name");
     expect(fundDetails.description).to.equal("description");
-    expect(fundDetails.currentBalance).to.equal(4 * fundingAmount);
+    expect(fundDetails.currentBalance).to.equal(fundingAmount.mul(4));
     expect(fundDetails.fundingAmount).to.equal(fundingAmount);
     expect(fundIndex).to.equal(0);
 
@@ -104,22 +104,23 @@ describe("Funds: NFT contract test", () => {
     expect(fundIds).to.deep.equal([fundId]);
   });
 
-  it.only("Test get funding", async () => {
+  it.only("Get funding", async () => {
     // Fund contract balance before calling funding method
     const contractBalanceBefore = await provider.getBalance(fundContract.address);
 
     // Credential owner balance before calling funding method
     const receiverBalanceBefore = await provider.getBalance(receiver.address);
 
-    await fundContract.connect(receiver).getFunding(credentialId, fundIndex);
+    const tx = await fundContract.connect(receiver).getFunding(credentialId, fundIndex);
+    const receipt = await tx.wait();
+    const fee = receipt.cumulativeGasUsed.mul(receipt.effectiveGasPrice);
 
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance after calling GetFunding method : ",
-      format(await provider.getBalance(nftOwner1.address))
-    );
-
-    // TODO: substitute with check, remove console
+    // Credential owner balance after calling funding method
+    const receiverBalanceAfter = await provider.getBalance(receiver.address);
+    const contractBalanceAfter = await provider.getBalance(fundContract.address);
+    
+    expect(receiverBalanceAfter).to.equal(receiverBalanceBefore.add(fundingAmount).sub(fee));
+    expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
   });
 
   it("Get Funding failure Test case (non NFT owner trying to call GetFunding method)", async () => {
