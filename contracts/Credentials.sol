@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Credential is ERC721URIStorage, Ownable, Pausable {
+contract Credentials is ERC721URIStorage, Ownable, Pausable {
     using EnumerableSet for EnumerableSet.AddressSet;
 
     using Counters for Counters.Counter;
@@ -17,7 +17,7 @@ contract Credential is ERC721URIStorage, Ownable, Pausable {
     // all the tokens hold by the owner
     mapping(address => uint256[]) ownerCredentials;
 
-    //Representation of Credential metadata
+    // Representation of credential metadata
     /*
      * first byte from left refers NFT identity (00 - ETH Global , 01 -Variant Fund , 02-Binance ).
      * next byte from left refers Event - (00 - WebJam, 01- NFTHAck, 02 - DEFI event and so on).

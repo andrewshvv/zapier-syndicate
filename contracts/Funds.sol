@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./NftFactoryV1.sol";
+import "./Credentials.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract Funds {
@@ -38,7 +38,7 @@ contract Funds {
     // fundingTable stores the information about which address received the funding.
     // Used to avoid the double-spend.
     mapping(uint256 => mapping(address => uint256)) fundingTable;
-    // depositTable
+    // TODO: What is this used for?
     mapping(uint256 => mapping(address => uint256)) depositTable;
 
     // Deposit event is fired when new deposit comes in.
