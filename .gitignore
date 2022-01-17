@@ -7,6 +7,7 @@ cache
 /node_modules
 /.idea
 *.tsbuildinfo
+.vscode
 
 .DS_Store
 

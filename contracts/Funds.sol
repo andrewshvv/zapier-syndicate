@@ -3,13 +3,14 @@ pragma solidity ^0.8.0;
 
 import "./Credentials.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "hardhat/console.sol";
 
 contract Funds {
     using Counters for Counters.Counter;
 
     string public Name = "Fund";
 
-    // 
+    //
     Credentials public credentials;
 
     // fundIdIterator is used to assign the unique id to the fund.
@@ -41,6 +42,8 @@ contract Funds {
     // TODO: What is this used for?
     mapping(uint256 => mapping(address => uint256)) depositTable;
 
+    // FundCreated event is fired when new new fund is created.
+    event FundCreated(address indexed createdBy, uint256 fundId);
     // Deposit event is fired when new deposit comes in.
     event Deposit(address indexed sender, uint256 amount);
     // Funding event is fired when new funding is given.
@@ -66,31 +69,28 @@ contract Funds {
         );
 
         allFundDetails.push(newFundDetials);
+        emit FundCreated(msg.sender, newFundDetials.fundId);
+        
         return newFundDetials.fundId;
     }
 
-    // getFundDetails returns the details of all the funds. Primarily ised by web apps.
-    function getFundDetails() external view returns (FundDetails[] memory) {
+    // getAllFundDetails returns the details of all the funds. Primarily used by web apps.
+    function getAllFundDetails() external view returns (FundDetails[] memory) {
         return allFundDetails;
     }
 
-
-    function depositFunds(uint256 fundId) external payable {
-        FundDetails memory fundDetails = allFundDetails[fundId];
+    // depositFunds deposit funds in the fund.
+    // NOTE: fund array index is used, not a fund id.
+    function depositFunds(uint256 fundIndex) external payable {
+        FundDetails memory fundDetails = allFundDetails[fundIndex];
 
         require(
             msg.value > fundDetails.fundingAmount,
             "deposit is less than funding amount"
         );
 
-        // TODO: instead of cycle use the comparison value with zero
-        for (uint256 index = 0; index < allFundDetails.length; index++) {
-            if (fundDetails.fundId == fundId) {
-                fundDetails.currentBalance += msg.value;
-                depositTable[fundId][msg.sender] += msg.value;
-            }
-        }
-
+        fundDetails.currentBalance += msg.value;
+        depositTable[fundDetails.fundId][msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
     }
 
@@ -123,8 +123,7 @@ contract Funds {
                 indexOFfundId++
             ) {
                 if (
-                    identifier ==
-                    allFundDetails[indexOFfundId].credentailsUsed
+                    identifier == allFundDetails[indexOFfundId].credentailsUsed
                 ) {
                     fundIds[index] = allFundDetails[indexOFfundId].fundId;
                 }
@@ -135,8 +134,10 @@ contract Funds {
     }
 
     // getFunding...
-    // TODO: should receive the set of credentials.
-    function getFunding(uint256 credential, uint256 fundId) external {
+    // NOTE: Fund index is used, not fund id.
+    function getFunding(uint256 credential, uint256 fundIndex) external {
+        // TODO: should receive the set of credentials.
+
         // ownership verification
         address ownerAddress = credentials.ownerOf(credential);
         require(
@@ -146,36 +147,27 @@ contract Funds {
 
         // check for identifiers and transfer
         bytes4 identifier = credentials.getIdentifiers(credential);
-        for (
-            uint256 indexOFfundId = 0;
-            indexOFfundId < allFundDetails.length;
-            indexOFfundId++
-        ) {
-            FundDetails memory fundDetails = allFundDetails[indexOFfundId];
+        FundDetails memory fundDetails = allFundDetails[fundIndex];
 
-            if (fundId == fundDetails.fundId) {
-                if (identifier == fundDetails.credentailsUsed) {
-                    require(
-                        fundingTable[fundDetails.fundId][msg.sender] == 0,
-                        "already withdrawn for this fund"
-                    );
-                    require(
-                        fundDetails.currentBalance < fundDetails.fundingAmount,
-                        "not enough funds to withdraw"
-                    );
-
-                    // TODO: transfer is not secure? Use OZ Address?
-                    payable(msg.sender).transfer(fundDetails.fundingAmount);
-
-                    fundDetails.currentBalance -= fundDetails.fundingAmount;
-                    fundingTable[fundDetails.fundId][msg.sender] = fundDetails
-                        .fundingAmount;
-
-                    emit Funding(msg.sender, fundDetails.fundingAmount);
-
-                    break;
-                }
-            }
+        if (identifier != fundDetails.credentailsUsed) {
+            revert("credential doesn't match");
         }
+
+        require(
+            fundingTable[fundDetails.fundId][msg.sender] == 0,
+            "already withdrawn for this fund"
+        );
+
+        require(
+            fundDetails.currentBalance < fundDetails.fundingAmount,
+            "not enough funds to withdraw"
+        );
+
+        // TODO: transfer is not secure? Use OZ Address?
+        payable(msg.sender).transfer(fundDetails.fundingAmount);
+
+        fundDetails.currentBalance -= fundDetails.fundingAmount;
+        fundingTable[fundDetails.fundId][msg.sender] = fundDetails.fundingAmount;
+        emit Funding(msg.sender, fundDetails.fundingAmount);
     }
 }
