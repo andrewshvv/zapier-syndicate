@@ -6,9 +6,9 @@ const {
   helperGetFundDetailsById,
   helperCreateFund,
   helperMintAnItem,
-  getHex, tokens, format } = require("./utils.js");
+  getHex, tokens } = require("./utils.js");
 
-describe("Funds: NFT contract test", () => {
+describe("Funds contract tests", () => {
   let credentiaContract;
   let credentialId;
   let fundContract;
@@ -104,7 +104,7 @@ describe("Funds: NFT contract test", () => {
     expect(fundIds).to.deep.equal([fundId]);
   });
 
-  it.only("Get funding", async () => {
+  it("Get funding", async () => {
     // Fund contract balance before calling funding method
     const contractBalanceBefore = await provider.getBalance(fundContract.address);
 
@@ -118,178 +118,52 @@ describe("Funds: NFT contract test", () => {
     // Credential owner balance after calling funding method
     const receiverBalanceAfter = await provider.getBalance(receiver.address);
     const contractBalanceAfter = await provider.getBalance(fundContract.address);
-    
+
     expect(receiverBalanceAfter).to.equal(receiverBalanceBefore.add(fundingAmount).sub(fee));
     expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
   });
 
-  it("Get Funding failure Test case (non NFT owner trying to call GetFunding method)", async () => {
-    await fundContract.createFund(
-      "ETHGLOBAL",
-      "NFT HACKATHON WINNERS",
-      tokens("0.5"),
-      getHex("0x00010010")
-    );
+  it.only("Get funding failure: non credential owner trying to get funds", async () => {
+    // Fund contract balance before calling funding method
+    const contractBalanceBefore = await provider.getBalance(fundContract.address);
 
-    let funddetails = await fundContract.getFundDetails();
-    // TODO: substitute with check, remove console
-    console.log(funddetails);
+    // Hacker balance before calling funding method
+    const hackerBalanceBefore = await provider.getBalance(hacker.address);
 
-    // TODO: substitute with check, remove console
-    expect(await provider.getBalance(admin.address)).to.equal(tokens("10000"));
+    await expect(fundContract.connect(hacker).getFunding(credentialId, fundIndex))
+      .to.be.revertedWith("credentails isn't owned by sender");
 
-    await fundContract.depositFunds(1, { value: tokens("2") });
+    // Hacker balance after calling funding method
+    const hackerBalanceAfter = await provider.getBalance(hacker.address);
+    const contractBalanceAfter = await provider.getBalance(fundContract.address);
 
-    funddetails = await fundContract.getFundDetails();
-    // TODO: substitute with check, remove console
-    console.log(funddetails);
+    expect(contractBalanceAfter).to.equal(contractBalanceBefore);
 
-    // TODO: substitute with check, remove console
-    console.log(
-      "admin balance after deposit : ",
-      format(await provider.getBalance(admin.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance before calling Evaluate NFT function : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    let matchedFundTypes = await fundContract
-      .connect(nftOwner1)
-      .evaluavateNFTCredentials([1]);
-
-    // TODO: substitute with check, remove console
-    console.log("matched fund types : ", matchedFundTypes);
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance after executing Evaluate NFT function : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance before calling GetFunding method : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance before calling GetFunding method : ",
-      format(await provider.getBalance(nftOwner2.address))
-    );
-    try {
-      await fundContract.connect(nftOwner2).getFunding(1, 1);
-    } catch (ex) {
-      console.error(ex.message);
-    }
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance after calling GetFunding method : ",
-      format(await provider.getBalance(nftOwner2.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance after executing GetFunding method: ",
-      format(await provider.getBalance(fundContract.address))
-    );
+    // TODO: How to get fee of reverted transaction?
+    // const receipt = await tx.wait();
+    // const fee = receipt.cumulativeGasUsed.mul(receipt.effectiveGasPrice);
+    // expect(hackerBalanceAfter).to.equal(hackerBalanceBefore.sub(fee));
   });
 
-  it("Get Funding failure Test case(Already claimed NFT owner trying to call GetFunding method)", async () => {
-    await fundContract.createFund(
-      "ETHGLOBAL",
-      "NFT HACKATHON WINNERS",
-      tokens("0.5"),
-      getHex("0x00010010")
-    );
+  it("Get funding failure: double spend", async () => {
+    // Fund contract balance before calling funding method
+    const contractBalanceBefore = await provider.getBalance(fundContract.address);
 
-    let funddetails = await fundContract.getFundDetails();
-    // TODO: substitute with check, remove console
-    console.log(funddetails);
+    // Credential owner balance before calling funding method
+    const receiverBalanceBefore = await provider.getBalance(receiver.address);
 
-    // TODO: substitute with check, remove console
-    console.log(
-      "admin balance before deposit : ",
-      format(await provider.getBalance(admin.address))
-    );
+    const tx = await fundContract.connect(receiver).getFunding(credentialId, fundIndex);
+    const receipt = await tx.wait();
+    const fee = receipt.cumulativeGasUsed.mul(receipt.effectiveGasPrice);
 
-    await fundContract.depositFunds(1, { value: tokens("2") });
+    // Credential owner balance after calling funding method
+    const receiverBalanceAfter = await provider.getBalance(receiver.address);
+    const contractBalanceAfter = await provider.getBalance(fundContract.address);
 
-    funddetails = await fundContract.getFundDetails();
-    // TODO: substitute with check, remove console
-    console.log(funddetails);
+    expect(receiverBalanceAfter).to.equal(receiverBalanceBefore.add(fundingAmount).sub(fee));
+    expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
 
-    // TODO: substitute with check, remove console
-    console.log(
-      "admin balance after deposit : ",
-      format(await provider.getBalance(admin.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance before calling Evaluate NFT function : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    let matchedFundTypes = await fundContract
-      .connect(nftOwner1)
-      .evaluavateNFTCredentials([1]);
-
-    // TODO: substitute with check, remove console
-    console.log("matched fund types : ", matchedFundTypes);
-
-
-    console.log(
-      "fund contract Balance after executing Evaluate NFT function : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance before calling GetFunding method : ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance before calling GetFunding method : ",
-      format(await provider.getBalance(nftOwner1.address))
-    );
-
-    await fundContract.connect(nftOwner1).getFunding(1, 1);
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance after calling GetFunding method : ",
-      format(await provider.getBalance(nftOwner1.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance after executing GetFunding method: ",
-      format(await provider.getBalance(fundContract.address))
-    );
-
-    try {
-      await fundContract.connect(nftOwner1).getFunding(1, 1);
-    } catch (ex) {
-      console.error(ex.message);
-    }
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "Nft owner Balance after calling GetFunding method second time : ",
-      format(await provider.getBalance(nftOwner1.address))
-    );
-
-    // TODO: substitute with check, remove console
-    console.log(
-      "fund contract Balance after executing GetFunding method second time: ",
-      format(await provider.getBalance(fundContract.address))
-    );
+    await expect(fundContract.connect(hacker).getFunding(credentialId, fundIndex))
+      .to.be.revertedWith("already withdrawn for this fund");
   });
 });

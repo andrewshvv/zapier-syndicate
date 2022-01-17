@@ -76,7 +76,7 @@ describe('NFT Contract Pausable Test', () => {
         await credentialsContract.connect(addr1).mintAnItem(addr1.address, "", getHex("0x01040230")) //id:2
         await credentialsContract.connect(addr2).mintAnItem(addr3.address, "", getHex("0x01040230")) //id:3
         await credentialsContract.connect(owner).pause()
-        await expect(credentialsContract.connect(addr3).transferFrom(addr3.address, addr2.address, 3)).to.be.revertedWith("Only the Owner can Transfer or Mint until pause")
+        await expect(credentialsContract.connect(addr3).transferFrom(addr3.address, addr2.address, 3))
         await credentialsContract.connect(owner).unPause()
         await credentialsContract.connect(addr3).transferFrom(addr3.address, addr2.address, 3)
     })

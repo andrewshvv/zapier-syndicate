@@ -149,16 +149,17 @@ contract Funds {
         bytes4 identifier = credentials.getIdentifiers(credential);
         FundDetails memory fundDetails = allFundDetails[fundIndex];
 
-        if (identifier != fundDetails.credentailsUsed) {
-            revert("credential doesn't match");
-        }
+        // TODO: Check the evaluation function of trigger, pass the metadata.
+        require(
+            identifier == fundDetails.credentailsUsed,
+            "credential doesn't match"
+        );
 
         require(
             fundingTable[fundDetails.fundId][msg.sender] == 0,
             "already withdrawn for this fund"
         );
 
-        console.log(fundDetails.currentBalance, fundDetails.fundingAmount);
         require(
             fundDetails.currentBalance > fundDetails.fundingAmount,
             "not enough funds to withdraw"
@@ -168,7 +169,8 @@ contract Funds {
         payable(msg.sender).transfer(fundDetails.fundingAmount);
 
         fundDetails.currentBalance -= fundDetails.fundingAmount;
-        fundingTable[fundDetails.fundId][msg.sender] = fundDetails.fundingAmount;
+        fundingTable[fundDetails.fundId][msg.sender] = fundDetails
+            .fundingAmount;
         emit Funding(msg.sender, fundDetails.fundingAmount);
     }
 }
