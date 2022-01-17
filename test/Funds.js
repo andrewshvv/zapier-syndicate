@@ -67,14 +67,14 @@ describe("Funds contract tests", () => {
 
   });
 
-  it.only("Verify credential", async () => {
+  it("Verify credential", async () => {
     // Check test context
     const owner = await credentiaContract.ownerOf(1);
     expect(owner).to.equal(receiver.address);
     expect(credentialId).to.equal(1);
   });
 
-  it.only("Verify fund has been created", async () => {
+  it("Verify fund has been created", async () => {
     // Check test context
     const fundDetails = await helperGetFundDetailsById(fundContract, fundId);
     const fundIndex = await helperGetFundIndexById(fundContract, fundDetails.fundId);
@@ -92,13 +92,13 @@ describe("Funds contract tests", () => {
 
   })
 
-  it.only("Verify funds being deposited", async () => {
+  it("Verify funds being deposited", async () => {
     // Check test context
     const fundDetails = await helperGetFundDetailsById(fundContract, fundId);
     expect(fundDetails.currentBalance).to.equal(tokens("2"));
   })
 
-  it.only("Verify nft owner eligable for funding", async () => {
+  it("Verify nft owner eligable for funding", async () => {
     // Check test context
     let fundIds = await fundContract.connect(receiver).eligableFunds([1]);
     expect(fundIds).to.deep.equal([fundId]);
@@ -123,7 +123,7 @@ describe("Funds contract tests", () => {
     expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
   });
 
-  it.only("Get funding failure: non credential owner trying to get funds", async () => {
+  it("Get funding failure: non credential owner trying to get funds", async () => {
     // Fund contract balance before calling funding method
     const contractBalanceBefore = await provider.getBalance(fundContract.address);
 
@@ -156,14 +156,17 @@ describe("Funds contract tests", () => {
     const receipt = await tx.wait();
     const fee = receipt.cumulativeGasUsed.mul(receipt.effectiveGasPrice);
 
-    // Credential owner balance after calling funding method
+    // Credential balance after calling funding method
     const receiverBalanceAfter = await provider.getBalance(receiver.address);
     const contractBalanceAfter = await provider.getBalance(fundContract.address);
 
     expect(receiverBalanceAfter).to.equal(receiverBalanceBefore.add(fundingAmount).sub(fee));
     expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
 
-    await expect(fundContract.connect(hacker).getFunding(credentialId, fundIndex))
+    await expect(fundContract.connect(receiver).getFunding(credentialId, fundIndex))
       .to.be.revertedWith("already withdrawn for this fund");
+
+    expect(receiverBalanceAfter).to.equal(receiverBalanceBefore.add(fundingAmount).sub(fee));
+    expect(contractBalanceAfter).to.equal(contractBalanceBefore.sub(fundingAmount));
   });
 });
