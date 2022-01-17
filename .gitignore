@@ -1,6 +1,9 @@
 # Allow a dummy project in this directory for testing purposes
 myproject
 
+artifacts
+cache
+
 /node_modules
 /.idea
 *.tsbuildinfo
@@ -90,40 +93,3 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
-artifacts/\@openzeppelin/contracts/access/Ownable.sol/Ownable.dbg.json
-
-artifacts/\@openzeppelin/contracts/security/Pausable.sol/Pausable.dbg.json
-
-artifacts/\@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.dbg.json
-
-artifacts/\@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol/ERC721URIStorage.dbg.json
-
-artifacts/\@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol/IERC721Metadata.dbg.json
-
-artifacts/\@openzeppelin/contracts/token/ERC721/IERC721.sol/IERC721.dbg.json
-
-artifacts/\@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol/IERC721Receiver.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/Address.sol/Address.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/Context.sol/Context.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/Counters.sol/Counters.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/introspection/ERC165.sol/ERC165.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/introspection/IERC165.sol/IERC165.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/Strings.sol/Strings.dbg.json
-
-artifacts/\@openzeppelin/contracts/utils/structs/EnumerableSet.sol/EnumerableSet.dbg.json
-
-artifacts/build-info/72a53370a34e552e69372151a9849559.json
-
-artifacts/build-info/acd1b09d214f9a0037dd255034242188.json
-
-artifacts/contracts/FundContractV1.sol/FundContractV1.dbg.json
-
-artifacts/contracts/FundContractV1.sol/FundContractV1.json
-
-artifacts/contracts/NftFactoryV1.sol/NftFactoryV1.dbg.json
