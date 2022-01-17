@@ -70,7 +70,7 @@ contract Funds {
 
         allFundDetails.push(newFundDetials);
         emit FundCreated(msg.sender, newFundDetials.fundId);
-        
+
         return newFundDetials.fundId;
     }
 
@@ -82,7 +82,7 @@ contract Funds {
     // depositFunds deposit funds in the fund.
     // NOTE: fund array index is used, not a fund id.
     function depositFunds(uint256 fundIndex) external payable {
-        FundDetails memory fundDetails = allFundDetails[fundIndex];
+        FundDetails storage fundDetails = allFundDetails[fundIndex];
 
         require(
             msg.value > fundDetails.fundingAmount,

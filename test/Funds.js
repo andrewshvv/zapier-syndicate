@@ -50,7 +50,7 @@ describe("Funds: NFT contract test", () => {
         getHex("0x00010010")
       );
 
-    
+
   });
 
   it("Verify owner 1 NFT", async () => {
@@ -58,14 +58,14 @@ describe("Funds: NFT contract test", () => {
     expect(owner).to.equal(nftOwner1.address);
   });
 
-  it.only("Create a fund", async ()=>{
+  it("Create a fund", async () => {
     const fundId = await fundContract.helperCreateFund(
       "name",
       "description",
       tokens("0.5"),
       getHex("0x00010010")
     );
-    
+
     const fundDetails = await fundContract.helperGetFundDetailsById(fundId);
     const fundIndex = await fundContract.helperGetFundIndexById(fundDetails.fundId);
 
@@ -75,11 +75,26 @@ describe("Funds: NFT contract test", () => {
     expect(fundDetails.currentBalance).to.equal(tokens("0"));
     expect(fundDetails.fundingAmount).to.equal(tokens("0.5"));
     expect(fundIndex).to.equal(0);
-    
+
     // TODO: check sender
     // TODO: check balance
     // TODO: check credentials types used
+    // TODO: check indexes, ids if many funds added just in case
+  })
 
+  it("Deposit funds", async () => {
+    const fundId = await fundContract.helperCreateFund(
+      "name",
+      "description",
+      tokens("0.5"),
+      getHex("0x00010010")
+    );
+
+    const fundIndex = await fundContract.helperGetFundIndexById(fundId);
+    await fundContract.depositFunds(fundIndex, { value: tokens("2") });
+
+    const fundDetails = await fundContract.helperGetFundDetailsById(fundId);
+    expect(fundDetails.currentBalance).to.equal(tokens("2"));
   })
 
   it("Get funding positive test case (NFT owner will get his ETH to his account)", async () => {
@@ -90,15 +105,16 @@ describe("Funds: NFT contract test", () => {
       getHex("0x00010010")
     );
 
-    const fundDetails = await fundContract.helperGetFundDetailsById(fundId);
-    
-    // TODO: should be 
+    let fundDetails = await fundContract.helperGetFundDetailsById(fundId);
+
+    // TODO: his check should be part of the test initialisation
     expect(await provider.getBalance(admin.address)).to.equal(tokens("10000"))
-    
+
     let fundIndex = await fundContract.helperGetFundIndexById(funddetails.fundId);
     await fundContract.depositFunds(fundIndex, { value: tokens("2") });
 
-    // funddetails = await fundContract.getFundDetails();
+    fundDetails = await fundContract.helperGetFundDetailsById(fundId);
+
     // // TODO: substitute with check, remove console
     // console.log(funddetails);
 
@@ -107,7 +123,7 @@ describe("Funds: NFT contract test", () => {
     //   "admin balance after deposit : ",
     //   format(await provider.getBalance(admin.address))
     // );
-    
+
     // // TODO: substitute with check, remove console
     // console.log(
     //   "fund contract Balance before calling Evaluate NFT function : ",
@@ -138,13 +154,13 @@ describe("Funds: NFT contract test", () => {
     // );
 
     // await fundContract.connect(nftOwner1).getFunding(1, 1);
-    
+
     // // TODO: substitute with check, remove console
     // console.log(
     //   "Nft owner Balance after calling GetFunding method : ",
     //   format(await provider.getBalance(nftOwner1.address))
     // );
-    
+
     // // TODO: substitute with check, remove console
     // console.log(
     //   "fund contract Balance after executing GetFunding method: ",
@@ -178,7 +194,7 @@ describe("Funds: NFT contract test", () => {
       "admin balance after deposit : ",
       format(await provider.getBalance(admin.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance before calling Evaluate NFT function : ",
@@ -191,19 +207,19 @@ describe("Funds: NFT contract test", () => {
 
     // TODO: substitute with check, remove console
     console.log("matched fund types : ", matchedFundTypes);
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance after executing Evaluate NFT function : ",
       format(await provider.getBalance(fundContract.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance before calling GetFunding method : ",
       format(await provider.getBalance(fundContract.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "Nft owner Balance before calling GetFunding method : ",
@@ -214,13 +230,13 @@ describe("Funds: NFT contract test", () => {
     } catch (ex) {
       console.error(ex.message);
     }
-  
+
     // TODO: substitute with check, remove console
     console.log(
       "Nft owner Balance after calling GetFunding method : ",
       format(await provider.getBalance(nftOwner2.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance after executing GetFunding method: ",
@@ -239,7 +255,7 @@ describe("Funds: NFT contract test", () => {
     let funddetails = await fundContract.getFundDetails();
     // TODO: substitute with check, remove console
     console.log(funddetails);
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "admin balance before deposit : ",
@@ -251,13 +267,13 @@ describe("Funds: NFT contract test", () => {
     funddetails = await fundContract.getFundDetails();
     // TODO: substitute with check, remove console
     console.log(funddetails);
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "admin balance after deposit : ",
       format(await provider.getBalance(admin.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance before calling Evaluate NFT function : ",
@@ -267,11 +283,11 @@ describe("Funds: NFT contract test", () => {
     let matchedFundTypes = await fundContract
       .connect(nftOwner1)
       .evaluavateNFTCredentials([1]);
-    
+
     // TODO: substitute with check, remove console
     console.log("matched fund types : ", matchedFundTypes);
-    
-    
+
+
     console.log(
       "fund contract Balance after executing Evaluate NFT function : ",
       format(await provider.getBalance(fundContract.address))
@@ -290,13 +306,13 @@ describe("Funds: NFT contract test", () => {
     );
 
     await fundContract.connect(nftOwner1).getFunding(1, 1);
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "Nft owner Balance after calling GetFunding method : ",
       format(await provider.getBalance(nftOwner1.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance after executing GetFunding method: ",
@@ -308,13 +324,13 @@ describe("Funds: NFT contract test", () => {
     } catch (ex) {
       console.error(ex.message);
     }
-  
+
     // TODO: substitute with check, remove console
     console.log(
       "Nft owner Balance after calling GetFunding method second time : ",
       format(await provider.getBalance(nftOwner1.address))
     );
-    
+
     // TODO: substitute with check, remove console
     console.log(
       "fund contract Balance after executing GetFunding method second time: ",
