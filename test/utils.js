@@ -16,11 +16,10 @@ module.exports = {
     fundHelperWrapper: function (fundContract) {
 
         // getFundIndexById is helper function to return array index of fund by its id
-        helperGetFundIndexById = async function (fundId) {
+        getFundIndexById = async function (fundId) {
             let allFundDetails = await fundContract.getAllFundDetails()
             for (let index = 0; index < allFundDetails.length; index++) {
-                console.log(allFundDetails[index].fundId, fundId);
-                if (allFundDetails[index].fundId == fundId) {
+                if (allFundDetails[index].fundId.toNumber()  == fundId.toNumber()) {
                     return index;
                 }
             }
@@ -29,7 +28,7 @@ module.exports = {
         }
 
         // getFundByDetailsId is helper function to return fund details by its id.
-        helperGetFundDetailsById = async function (fundId) {
+        getFundDetailsById = async function (fundId) {
             let fundIndex = await getFundIndexById(fundId)
             let allFundDetails = await fundContract.getAllFundDetails()
             return allFundDetails[fundIndex];
@@ -37,18 +36,16 @@ module.exports = {
 
         // createFund version of create fund function which return 
         // the fund id, by listening to the event.
-        helperCreateFund = async function(...args) {
+        createFund = async function(...args) {
             const tx = await fundContract.createFund(...args);
             const receipt = await tx.wait();
             const event = receipt.events.find(event => event.event === 'FundCreated');
-            console.log(event.args);
-            let _, _, value = event.args;
-            return event.fundId
+            return event.args['fundId']
         }
 
-        fundContract.helperGetFundIndexById = helperGetFundIndexById;
-        fundContract.helperGetFundDetailsById = helperGetFundDetailsById;
-        fundContract.helperCreateFund = helperCreateFund;
+        fundContract.helperGetFundIndexById = getFundIndexById;
+        fundContract.helperGetFundDetailsById = getFundDetailsById;
+        fundContract.helperCreateFund = createFund;
         return fundContract;
     }
 }

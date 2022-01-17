@@ -58,33 +58,45 @@ describe("Funds: NFT contract test", () => {
     expect(owner).to.equal(nftOwner1.address);
   });
 
-  it("Create A Fund and verify", async ()=>{
+  it.only("Create a fund", async ()=>{
+    const fundId = await fundContract.helperCreateFund(
+      "name",
+      "description",
+      tokens("0.5"),
+      getHex("0x00010010")
+    );
+    
+    const fundDetails = await fundContract.helperGetFundDetailsById(fundId);
+    const fundIndex = await fundContract.helperGetFundIndexById(fundDetails.fundId);
 
-    await fundContract.createFund("ETHGLOBAL", "NFT HACKATHON WINNERS", tokens("0.5"), getHex("0x00010010"));
-    let funddetails = await fundContract.getFundDetails();
-
-    // TODO: substitute with check, remove console
-    console.log(funddetails);
+    expect(fundDetails.fundId).to.equal(1);
+    expect(fundDetails.name).to.equal("name");
+    expect(fundDetails.description).to.equal("description");
+    expect(fundDetails.currentBalance).to.equal(tokens("0"));
+    expect(fundDetails.fundingAmount).to.equal(tokens("0.5"));
+    expect(fundIndex).to.equal(0);
+    
+    // TODO: check sender
+    // TODO: check balance
+    // TODO: check credentials types used
 
   })
 
-  it.only("Get funding positive test case (NFT owner will get his ETH to his account)", async () => {
-    let fundId = await fundContract.helperCreateFund(
+  it("Get funding positive test case (NFT owner will get his ETH to his account)", async () => {
+    const fundId = await fundContract.helperCreateFund(
       "ethglobal",
       "nft hackathon address",
       tokens("0.5"),
       getHex("0x00010010")
     );
 
-    console.log(fundId);
-
-    // let funddetails = await fundContract.getFundDetailsById(fundId);
-    // expect(funddetails.fundId).to.equal(1);
-    // expect(await provider.getBalance(admin.address)).to.equal(tokens("10000"))
+    const fundDetails = await fundContract.helperGetFundDetailsById(fundId);
     
-    // let fundIndex = await fundContract.getFundIndexById(funddetails.fundId.value);
-    // expect(fundIndex).to.equal(0);
-    // await fundContract.depositFunds(fundIndex, { value: tokens("2") });
+    // TODO: should be 
+    expect(await provider.getBalance(admin.address)).to.equal(tokens("10000"))
+    
+    let fundIndex = await fundContract.helperGetFundIndexById(funddetails.fundId);
+    await fundContract.depositFunds(fundIndex, { value: tokens("2") });
 
     // funddetails = await fundContract.getFundDetails();
     // // TODO: substitute with check, remove console
