@@ -1,23 +1,10 @@
 const { expect } = require("chai");
 const { ethers, waffle } = require("hardhat");
 const provider = waffle.provider;
-
-const getHex = (hex) => {
-  let byteArray = ethers.utils.arrayify(hex);
-  //console.log("bytearray : ", byteArray);
-  return byteArray;
-};
-
-const tokens = (val) => {
-  return ethers.utils.parseEther(val);
-};
-
-function format(n) {
-  return ethers.utils.formatEther(n);
-}
+const { getHex, tokens, format } = require("./utils.js");
 
 describe("NFT Contract Test", () => {
-  let nftContract;
+  let credentiaContract;
   let fundContract;
   let admin;
   let nftOwner1,
@@ -42,12 +29,17 @@ describe("NFT Contract Test", () => {
       ...nftOwner10
     ] = await ethers.getSigners();
 
-    let zapiSmartContract = await ethers.getContractFactory("NftFactoryV1");
+    // Deploy nft factory smart contract
+    let credentialFactory = await ethers.getContractFactory("Credential");
+    credentiaContract = await credentialFactory.deploy("ZAPIERFI", "ZAP");
 
-    nftContract = await zapiSmartContract.deploy("ZAPIERFI", "ZAP");
+    // Deploy fund smart contract
+    let fundFactory = await ethers.getContractFactory("Fund");
+    fundContract = await fundFactory.deploy(credentiaContract.address);
 
-    //Ethglobal,Nfthackevent,Defi category, first place , no seeed
-    await nftContract
+    // Create the nft credential
+    // Ethglobal, Nfthackevent, Defi category, first place, no seeed
+    await credentiaContract
       .connect(admin)
       .mintAnItem(
         nftOwner1.address,
@@ -55,13 +47,11 @@ describe("NFT Contract Test", () => {
         getHex("0x00010010")
       );
 
-    let fundSmartContract = await ethers.getContractFactory("FundContractV1");
-
-    fundContract = await fundSmartContract.deploy(nftContract.address);
+    
   });
 
   it("Verify owner 1 NFT", async () => {
-    let owner = await nftContract.ownerOf(1);
+    let owner = await credentiaContract.ownerOf(1);
     expect(owner).to.equal(nftOwner1.address);
   });
 
@@ -69,7 +59,7 @@ describe("NFT Contract Test", () => {
 
     await fundContract.createFund("ETHGLOBAL", "NFT HACKATHON WINNERS", tokens("0.5"), getHex("0x00010010"));
 
-    let funddetails = await fundContract.getFundetails();
+    let funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
   })
@@ -82,7 +72,7 @@ describe("NFT Contract Test", () => {
       getHex("0x00010010")
     );
 
-    let funddetails = await fundContract.getFundetails();
+    let funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(
@@ -90,9 +80,9 @@ describe("NFT Contract Test", () => {
       format(await provider.getBalance(admin.address))
     );
 
-    await fundContract.depositFund(1, { value: tokens("2") });
+    await fundContract.depositFunds(1, { value: tokens("2") });
 
-    funddetails = await fundContract.getFundetails();
+    funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(
@@ -138,7 +128,7 @@ describe("NFT Contract Test", () => {
     );
   });
 
-  it("Get Funding failure Test case(non NFT owner trying to call GetFunding method)", async () => {
+  it("Get Funding failure Test case (non NFT owner trying to call GetFunding method)", async () => {
     await fundContract.createFund(
       "ETHGLOBAL",
       "NFT HACKATHON WINNERS",
@@ -146,7 +136,7 @@ describe("NFT Contract Test", () => {
       getHex("0x00010010")
     );
 
-    let funddetails = await fundContract.getFundetails();
+    let funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(
@@ -154,9 +144,9 @@ describe("NFT Contract Test", () => {
       format(await provider.getBalance(admin.address))
     );
 
-    await fundContract.depositFund(1, { value: tokens("2") });
+    await fundContract.depositFunds(1, { value: tokens("2") });
 
-    funddetails = await fundContract.getFundetails();
+    funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(
@@ -213,7 +203,7 @@ describe("NFT Contract Test", () => {
       getHex("0x00010010")
     );
 
-    let funddetails = await fundContract.getFundetails();
+    let funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(
@@ -221,9 +211,9 @@ describe("NFT Contract Test", () => {
       format(await provider.getBalance(admin.address))
     );
 
-    await fundContract.depositFund(1, { value: tokens("2") });
+    await fundContract.depositFunds(1, { value: tokens("2") });
 
-    funddetails = await fundContract.getFundetails();
+    funddetails = await fundContract.getFundDetails();
     console.log(funddetails);
 
     console.log(

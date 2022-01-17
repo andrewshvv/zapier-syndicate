@@ -1,16 +1,12 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat")
+const { getHex } = require("./utils.js");
 
-const getHex = (hex)=>{
-    let byteArray = ethers.utils.arrayify(hex);
-    //console.log("bytearray : ", byteArray);
-    return byteArray;
-}
 describe('NFT Contract Pausable Test', () =>{
     let NFT, owner,addr1,addr2,addr3,addrs, deployedNFT
 
     beforeEach(async () => {
-        NFT = await ethers.getContractFactory("NftFactoryV1");
+        NFT = await ethers.getContractFactory("NftFactory");
         [owner, addr1, addr2,addr3, ...addrs] = await ethers.getSigners();
         let _name = 'CREDENTIAL'
         let _symbol = "CRT"
@@ -88,7 +84,7 @@ describe('NFT Contract Test', () =>{
     let NFT, owner,addr1,addr2,addr3,addrs, deployedNFT
 
     beforeEach(async () => {
-        NFT = await ethers.getContractFactory("NftFactoryV1");
+        NFT = await ethers.getContractFactory("NftFactory");
         [owner, addr1, addr2,addr3, ...addrs] = await ethers.getSigners();
         let _name = 'CREDENTIAL'
         let _symbol = "CRT"

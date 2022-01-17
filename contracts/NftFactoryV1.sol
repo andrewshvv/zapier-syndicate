@@ -1,18 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/security/Pausable.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/structs/EnumerableSet.sol";
-// import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract NftFactoryV1 is ERC721URIStorage, Ownable, Pausable {
+contract Credential is ERC721URIStorage, Ownable, Pausable {
     using EnumerableSet for EnumerableSet.AddressSet;
 
     using Counters for Counters.Counter;
@@ -74,7 +69,7 @@ contract NftFactoryV1 is ERC721URIStorage, Ownable, Pausable {
     ) external returns (uint256) {
         require(
             minters.contains(msg.sender),
-            "Sorry you dont have minter role"
+            "permission denied"
         );
 
         _tokenIds.increment();
@@ -124,7 +119,7 @@ contract NftFactoryV1 is ERC721URIStorage, Ownable, Pausable {
     {
         require(
             ownerCredentials[owner_].length > 0,
-            "Sorry no Credentials on your wallet"
+            "no credentials found"
         );
         return ownerCredentials[owner_];
     }
