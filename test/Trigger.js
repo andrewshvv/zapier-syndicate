@@ -13,13 +13,6 @@ describe("credential codec", async () => {
         // Ensure that the event polling is happens faster
         trigger.provider.pollingInterval = 100;
 
-        // const Category = {
-        //     None: 0,
-        //     DefiTools: 1,
-        //     Nfts: 2,
-        //     Dapps: 3,
-        // };
-
         const Message = new protobuf.Type("Message")
             .add(new protobuf.Field("length", 1, "uint32"))
             .add(new protobuf.Field("winner", 2, "uint32"))
@@ -29,11 +22,14 @@ describe("credential codec", async () => {
         const message = Message.create({ length: 3, winner: 501, place: 502, category: 503 });
         const metadata = Message.encode(message).finish().toString("hex");
 
-        console.log("metadata: ", "0x" + metadata);
-        // await trigger.callStatic.evaluate("0x" + metadata);
+        let values = await trigger.callStatic.decodeMetadata("0x" + metadata);
+        expect(values[0]).to.be.equal(501);
+        expect(values[1]).to.be.equal(502);
+        expect(values[2]).to.be.equal(503);
+        expect("0x" + metadata).to.be.equal("0x080310f50318f60320f703");
 
         // Duplication for gas estimation
-        await trigger.evaluate("0x" + metadata);
+        await trigger.decodeMetadata("0x" + metadata);
     });
 
     it.only("credential array", async () => {

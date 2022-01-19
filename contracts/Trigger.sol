@@ -8,22 +8,28 @@ import "./Codec.sol";
 contract Trigger {
     constructor() {}
 
-    function evaluate(bytes memory metadata) external {
+    function decodeMetadata(bytes memory metadata)
+        external
+        returns (uint32[] memory values)
+    {
         bool success;
         uint64 pos;
-        uint32[] memory values;
-        
-        (success, pos, values) = CredentialCodec.decode(0, metadata, uint64(metadata.length));
 
-        for (uint64 i = 0; i < values.length; i++) {
-            console.log("value: ", i, values[i]);
+        (success, pos, values) = CredentialCodec.decode(
+            0,
+            metadata,
+            uint64(metadata.length)
+        );
+        if (!success) {
+            revert("failed to decode metadata");
         }
+
+        return values;
     }
 }
 
 contract CredentialsArray {
     mapping(uint32 => uint32[]) public credentials;
-    
 
     function add(uint32[] memory metadata) external {
         credentials[0] = metadata;
