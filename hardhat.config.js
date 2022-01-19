@@ -1,9 +1,12 @@
+require("@nomiclabs/hardhat-waffle");
+require("hardhat-gas-reporter");
+require('dotenv').config({ path: __dirname + '/.env' });
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
- require("@nomiclabs/hardhat-waffle");
 
-const RINKEBY_RPC_URL= 'https://rinkeby.infura.io/v3/3c0f5d523cc6404685b777cb62994527';
+const RINKEBY_RPC_URL = 'https://rinkeby.infura.io/v3/3c0f5d523cc6404685b777cb62994527';
 const PRIVATE_KEY = '5af283d5d90a73d73a77cfc71c77032131d92d52131914c7a80b10c2b5bd3f0d';
 
 const GANACHE_RPC_URL = 'http://127.0.0.1:7545'
@@ -19,7 +22,7 @@ module.exports = {
       url: RINKEBY_RPC_URL,
       accounts: [PRIVATE_KEY],
       //accounts: {
-          //mnemonic: MNEMONIC,
+      //mnemonic: MNEMONIC,
       gas: 2100000,
       gasPrice: 8000000000,
       saveDeployments: true,
@@ -30,6 +33,14 @@ module.exports = {
       gas: 2100000,
       gasPrice: 8000000000,
       saveDeployments: true,
-    }
-  }
+    },
+  },
+  gasReporter: {
+    enabled: (process.env.REPORT_GAS) ? true : false,
+    currency: "USD",
+    gasPrice: 114,
+    onlyCalledMethods: true,
+    showTimeSpent: true,
+    coinmarketcap: process.env.COINMARKETCAP_KEY
+  },
 };
