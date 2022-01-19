@@ -3,7 +3,6 @@
  */
  require("@nomiclabs/hardhat-waffle");
 
-
 const RINKEBY_RPC_URL= 'https://rinkeby.infura.io/v3/3c0f5d523cc6404685b777cb62994527';
 const PRIVATE_KEY = '5af283d5d90a73d73a77cfc71c77032131d92d52131914c7a80b10c2b5bd3f0d';
 
