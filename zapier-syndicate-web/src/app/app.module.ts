@@ -1,13 +1,11 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'; 
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 
-import { FundsModule } from './funds/funds.module'
-
-import { Web3Service } from './web3.service';
+import {FundsModule} from './funds/funds.module'
 
 @NgModule({
   declarations: [
@@ -22,4 +20,5 @@ import { Web3Service } from './web3.service';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

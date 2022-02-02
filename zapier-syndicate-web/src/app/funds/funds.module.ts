@@ -1,21 +1,21 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 //component
-import { FundsComponent } from './funds.component';
+import {FundsComponent} from './funds.component';
 //directives
-
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     FundsComponent
   ],
   imports: [
-      CommonModule,
-      FormsModule
+    CommonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [FundsComponent]
 })
-export class FundsModule { }
+export class FundsModule {
+}

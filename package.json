@@ -1,6 +1,8 @@
 {
   "name": "hardhat-project",
   "devDependencies": {
+    "@eth-optimism/contracts": "^0.5.8",
+    "@jsep-plugin/new": "^1.0.1",
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
@@ -9,11 +11,13 @@
     "ethers": "^5.5.3",
     "hardhat": "^2.8.2",
     "hardhat-gas-reporter": "^1.0.7",
+    "jsep": "^1.2.0",
     "mocha": "^9.1.4",
-    "web3": "^1.7.0",
-    "protobufjs": "^6.11.2"
+    "protobufjs": "^6.11.2",
+    "web3": "^1.7.0"
   },
   "dependencies": {
+    "@icholy/duration": "^5.1.0",
     "@lazyledger/protobuf3-solidity-lib": "git+https://github.com/andrewshvv/protobuf3-solidity-lib.git",
     "@openzeppelin/contracts": "^4.4.2",
     "dotenv": "^14.2.0"

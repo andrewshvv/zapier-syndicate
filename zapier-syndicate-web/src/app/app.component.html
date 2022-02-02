@@ -2,19 +2,20 @@
 <div class=" header">
   <div class="row">
     <div class="col-lg-1">
-      <img src="" />
+      <img src=""/>
     </div>
     <div class="col-lg-8 title">
       <span>Zapier-Syndicate</span>
     </div>
     <div class="col-lg-3 metaBtn">
       <ng-container *ngIf="!connectedToMetaMask">
-        <button type="button" class="btn btn-primary" (click)="metamaskConnect()">
-          Connect to MetaMask</button>
+        <button (click)="metamaskConnect()" class="btn btn-primary" type="button">
+          Connect to MetaMask
+        </button>
       </ng-container>
       <ng-container *ngIf="connectedToMetaMask">
         <span class="usrIdent">
-          <img class="networkLogo" src="../assets/ethereumLogo.png" /> {{connectedNetwork}} </span>
+          <img class="networkLogo" src="../assets/ethereumLogo.png"/> {{connectedNetwork}} </span>
         <!-- <button type="button" class="btn btn-primary"> {{connectedNetwork}}</button> -->
         <span (click)="getCurrentAccountBalance()" class="usrIdent"> {{currentAccountBalance}} ETH  </span>
       </ng-container>
@@ -23,16 +24,16 @@
 </div>
 
 
-<div class="container" >
- <div class="row justify-content-start navBar">
-   <div class="col-lg-1 selected">
-    <span >Funds</span>
-    
-   </div>
- </div>
- <div class="row justify-content-start">
-   <div class="col-lg-12">
-    <router-outlet></router-outlet>
-   </div>
- </div>
+<div class="container">
+  <div class="row justify-content-start navBar">
+    <div class="col-lg-1 selected">
+      <span>Funds</span>
+
+    </div>
+  </div>
+  <div class="row justify-content-start">
+    <div class="col-lg-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

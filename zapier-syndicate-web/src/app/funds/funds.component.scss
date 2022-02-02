@@ -1,128 +1,130 @@
 .pageDescriptor {
-    padding-top: 10px;
-    font-size: 14px;
-    color: grey;
+  padding-top: 10px;
+  font-size: 14px;
+  color: grey;
 }
 
-.itemCenter{
-    text-align: center;
+.itemCenter {
+  text-align: center;
 }
 
 .userDetails {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #b9b8b8;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #b9b8b8;
 
-    .notConnected {
+  .notConnected {
 
-        span.msg{
-            color: #3f8be4;
-            border-bottom: 1px solid #3f8be4;
-            cursor: pointer;
-        }
+    span.msg {
+      color: #3f8be4;
+      border-bottom: 1px solid #3f8be4;
+      cursor: pointer;
     }
+  }
 }
 
 .userDetails, .otherFund {
 
-    .fundDets {
-        padding: 10px 0px 10px 0px;
-        margin: 10px;
-        border: 1px solid #b9b8b8;
-        border-radius: 5px;
-        background-color: #b9b8b842;
+  .fundDets {
+    padding: 10px 0px 10px 0px;
+    margin: 10px;
+    border: 1px solid #b9b8b8;
+    border-radius: 5px;
+    background-color: #b9b8b842;
 
-        .title {
-            padding: 10px;
-            color: black;
-            
-            span {
-                font-size: 16px;
-                font-weight: 600;
-            }
-        }
+    .title {
+      padding: 10px;
+      color: black;
 
-        .desc {
-            padding: 10px;
-
-            span {
-                font-size: 14px;
-                color: grey;
-            }
-        }
-
-        .imgContainer{
-            padding: 10px;
-
-            .img{
-                margin-top: 15px;
-                height: 40px;
-            }
-        }
-
-        .investDetail {
-            padding: 10px 0px 10px 0px;
-            border-bottom: 1px solid #b9b8b8;
-
-            .desc {
-                font-size: 14px;
-                color: #808292;
-            }
-
-            .amnt {
-                font-size: 25px;
-                font-weight: 600;
-                color: black;
-                padding: 10px;
-            }
-        }
-
-        .currentInvest {
-            padding: 10px 0px 10px 0px;
-            border-bottom: 1px solid #b9b8b8;
-            .desc {
-                font-size: 12px;
-                color: #808292;
-            }
-
-            .amnt {
-                font-size: 14px;
-                font-weight: 600;
-                color: black;
-                padding: 10px;
-            }
-
-            .maxAmnt {
-                text-align: right;
-                color: #b9b8b8;
-            }
-        }
-
-        .creator {
-
-            .desc {
-                font-size: 12px;
-                color: #808292;
-            }
-
-            .usrImg{
-                width: 35px;
-            }
-            .by{
-                font-size: 14px;
-                color: #3f8be4;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                width: 93px;
-                display: inline-block;
-                direction: rtl;
-            }
-
-            .getFundBtn {
-                width: 119px;
-                height: 38px;
-
-            }
-        }
+      span {
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
+
+    .desc {
+      padding: 10px;
+
+      span {
+        font-size: 14px;
+        color: grey;
+      }
+    }
+
+    .imgContainer {
+      padding: 10px;
+
+      .img {
+        margin-top: 15px;
+        height: 40px;
+      }
+    }
+
+    .investDetail {
+      padding: 10px 0px 10px 0px;
+      border-bottom: 1px solid #b9b8b8;
+
+      .desc {
+        font-size: 14px;
+        color: #808292;
+      }
+
+      .amnt {
+        font-size: 25px;
+        font-weight: 600;
+        color: black;
+        padding: 10px;
+      }
+    }
+
+    .currentInvest {
+      padding: 10px 0px 10px 0px;
+      border-bottom: 1px solid #b9b8b8;
+
+      .desc {
+        font-size: 12px;
+        color: #808292;
+      }
+
+      .amnt {
+        font-size: 14px;
+        font-weight: 600;
+        color: black;
+        padding: 10px;
+      }
+
+      .maxAmnt {
+        text-align: right;
+        color: #b9b8b8;
+      }
+    }
+
+    .creator {
+
+      .desc {
+        font-size: 12px;
+        color: #808292;
+      }
+
+      .usrImg {
+        width: 35px;
+      }
+
+      .by {
+        font-size: 14px;
+        color: #3f8be4;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 93px;
+        display: inline-block;
+        direction: rtl;
+      }
+
+      .getFundBtn {
+        width: 119px;
+        height: 38px;
+
+      }
+    }
+  }
 }

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+enum Opcode {
+  UNSPECIFIED = 0;
+  OPCODE_CONST = 1;
+  OPCODE_NOT = 2;
+  OPCODE_EQ = 3;
+  OPCODE_NE = 4;
+  OPCODE_LT = 5;
+  OPCODE_GT = 6;
+  OPCODE_LE = 7;
+  OPCODE_GE = 8;
+  OPCODE_AND = 9;
+  OPCODE_OR = 10;
+  OPCODE_GVAL = 11;
+  OPCODE_ADD = 12;
+  OPCODE_SUB = 13;
+  OPCODE_NOW = 14;
+  OPCODE_GARRAY = 15;
+  OPCODE_CONTAINS = 16;
+  OPCODE_IN = 17;
+  OPCODE_INVALID = 18;
+}
+
+message Node {
+  Opcode opcode = 1;
+  repeated uint32 leafs = 2 [packed = true];
+  repeated int32 arguments = 3 [packed = true];
+}
+
+// Expression is ommited in the decode library, because:
+// Storing struct inside the struct is not supported by solidity.
+// https://stackoverflow.com/questions/49345903/copying-of-type-struct-memory-memory-to-storage-not-yet-supported
+message Expression {
+  repeated Node nodes = 1;
+}

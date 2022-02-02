@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Web3Service } from './web3.service'
+import {Component, OnInit} from '@angular/core';
+import {Web3Service} from './web3.service'
 
 @Component({
   selector: 'app-root',
@@ -20,51 +20,52 @@ export class AppComponent implements OnInit {
     1337: "Ganache TestNet"
   };
 
-  constructor(private web3: Web3Service){}
+  constructor(private web3: Web3Service) {
+  }
 
   ngOnInit(): void {
-    this.web3.accountChanged.subscribe((data:any)=>{
-      if(data != undefined && data != ''){
+    this.web3.accountChanged.subscribe((data: any) => {
+      if (data != undefined && data != '') {
         this.web3Changed(true);
-      }else{
+      } else {
         this.web3Changed(false);
       }
     });
 
-    this.web3.userFunded.subscribe((data:any)=>{
-      if(data != undefined && data != ''){
+    this.web3.userFunded.subscribe((data: any) => {
+      if (data != undefined && data != '') {
         this.getCurrentAccountBalance();
       }
 
     });
-    
+
     this.web3.connectToABI();
-      
+
   }
 
-  public web3Changed(isConnected: boolean){
-    if(isConnected){
+  public web3Changed(isConnected: boolean) {
+    if (isConnected) {
       this.connectedToMetaMask = true;
       this.getNetworkName(this.web3.getChainID());
       this.getCurrentAccountBalance();
-    }else{
+    } else {
       this.connectedToMetaMask = false;
     }
   }
 
-  public metamaskConnect(){
+  public metamaskConnect() {
     console.log("Metamask connect trigger");
     this.web3.connectToMetaMask();
   }
 
-  public getNetworkName(chainId: any){
-    if(chainId != undefined || chainId != ''){
+  public getNetworkName(chainId: any) {
+    if (chainId != undefined || chainId != '') {
       this.connectedNetwork = this.networks[chainId];
     }
   }
 
-  public async getCurrentAccountBalance(){
-    this.web3.getAccountBalance().then((data: any) =>{
+  public async getCurrentAccountBalance() {
+    this.web3.getAccountBalance().then((data: any) => {
       this.currentAccountBalance = data;
     });
   }

@@ -4,11 +4,11 @@ pragma solidity ^0.8.0;
 
 import "@lazyledger/protobuf3-solidity-lib/contracts/ProtobufLib.sol";
 
-struct Credential {
-    uint32 winner;
-    uint32 place;
-    uint32 category;
-}
+    struct Credential {
+        uint32 winner;
+        uint32 place;
+        uint32 category;
+    }
 
 library CredentialCodec {
     function decode(
@@ -16,13 +16,13 @@ library CredentialCodec {
         bytes memory buf,
         uint64 blen
     )
-        internal
-        pure
-        returns (
-            bool,
-            uint64,
-            uint32[] memory
-        )
+    external
+    pure
+    returns (
+        bool,
+        uint64,
+        uint32[] memory
+    )
     {
         // Decoded values
         uint32[] memory values;
@@ -41,7 +41,7 @@ library CredentialCodec {
 
         // Extract values arrays length as first value
         uint32 length;
-        (success, pos, field_number, length) = decode_value(
+        (success, pos, field_number, length) = _decode_value(
             pos,
             field_number,
             buf
@@ -55,7 +55,7 @@ library CredentialCodec {
 
         uint32 i = 0;
         while (pos - initial_pos < blen && i < length) {
-            (success, pos, field_number, val) = decode_value(
+            (success, pos, field_number, val) = _decode_value(
                 pos,
                 field_number,
                 buf
@@ -76,19 +76,19 @@ library CredentialCodec {
         return (true, pos, values);
     }
 
-    function decode_value(
+    function _decode_value(
         uint64 pos,
         uint64 previous_field_number,
         bytes memory buf
     )
-        internal
-        pure
-        returns (
-            bool,
-            uint64,
-            uint64,
-            uint32
-        )
+    internal
+    pure
+    returns (
+        bool,
+        uint64,
+        uint64,
+        uint32
+    )
     {
         bool success;
         uint64 field_number;
@@ -125,13 +125,13 @@ library CredentialCodec {
     }
 
     function decode_uint32(uint64 pos, bytes memory buf)
-        internal
-        pure
-        returns (
-            bool,
-            uint64,
-            uint32
-        )
+    internal
+    pure
+    returns (
+        bool,
+        uint64,
+        uint32
+    )
     {
         bool success;
 

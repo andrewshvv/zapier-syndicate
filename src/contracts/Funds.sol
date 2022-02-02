@@ -94,83 +94,83 @@ contract Funds {
         emit Deposit(msg.sender, msg.value);
     }
 
-    // eligableFunds returns the funds that are eligable for funding
-    // with the given set of credentials. Used by the web app.
-    function eligableFunds(uint256[] memory credentialsIds)
-        external
-        view
-        returns (uint256[] memory)
-    {
-        // ownership verification
-        uint256 credentialLength = credentialsIds.length;
-        for (uint256 index = 0; index < credentialLength; index++) {
-            address ownerAddress = credentials.ownerOf(credentialsIds[index]);
-            require(
-                ownerAddress == msg.sender,
-                "credential isn't owner by sender"
-            );
-        }
-        //return matched fund ids
-        uint256[] memory fundIds = new uint256[](allFundDetails.length);
-        for (uint256 index = 0; index < credentialLength; index++) {
-            bytes4 identifier = credentials.getIdentifiers(
-                credentialsIds[index]
-            );
+    // // eligableFunds returns the funds that are eligable for funding
+    // // with the given set of credentials. Used by the web app.
+    // function eligableFunds(uint256[] memory credentialsIds)
+    //     external
+    //     view
+    //     returns (uint256[] memory)
+    // {
+    //     // ownership verification
+    //     uint256 credentialLength = credentialsIds.length;
+    //     for (uint256 index = 0; index < credentialLength; index++) {
+    //         address ownerAddress = credentials.ownerOf(credentialsIds[index]);
+    //         require(
+    //             ownerAddress == msg.sender,
+    //             "credential isn't owner by sender"
+    //         );
+    //     }
+    //     //return matched fund ids
+    //     uint256[] memory fundIds = new uint256[](allFundDetails.length);
+    //     for (uint256 index = 0; index < credentialLength; index++) {
+    //         bytes4 identifier = credentials.getIdentifiers(
+    //             credentialsIds[index]
+    //         );
 
-            for (
-                uint256 indexOFfundId = 0;
-                indexOFfundId < allFundDetails.length;
-                indexOFfundId++
-            ) {
-                if (
-                    identifier == allFundDetails[indexOFfundId].credentailsUsed
-                ) {
-                    fundIds[index] = allFundDetails[indexOFfundId].fundId;
-                }
-            }
-        }
+    //         for (
+    //             uint256 indexOFfundId = 0;
+    //             indexOFfundId < allFundDetails.length;
+    //             indexOFfundId++
+    //         ) {
+    //             if (
+    //                 identifier == allFundDetails[indexOFfundId].credentailsUsed
+    //             ) {
+    //                 fundIds[index] = allFundDetails[indexOFfundId].fundId;
+    //             }
+    //         }
+    //     }
 
-        return fundIds;
-    }
+    //     return fundIds;
+    // }
 
-    // getFunding...
-    // NOTE: Fund index is used, not fund id.
-    function getFunding(uint256 credential, uint256 fundIndex) external {
-        // TODO: should receive the set of credentials.
+    // // getFunding...
+    // // NOTE: Fund index is used, not fund id.
+    // function getFunding(uint256 credential, uint256 fundIndex) external {
+    //     // TODO: should receive the set of credentials.
 
-        // ownership verification
-        address ownerAddress = credentials.ownerOf(credential);
-        require(
-            ownerAddress == msg.sender,
-            "credentails isn't owned by sender"
-        );
+    //     // ownership verification
+    //     address ownerAddress = credentials.ownerOf(credential);
+    //     require(
+    //         ownerAddress == msg.sender,
+    //         "credentails isn't owned by sender"
+    //     );
 
-        // check for identifiers and transfer
-        bytes4 identifier = credentials.getIdentifiers(credential);
-        FundDetails memory fundDetails = allFundDetails[fundIndex];
+    //     // check for identifiers and transfer
+    //     bytes4 identifier = credentials.getIdentifiers(credential);
+    //     FundDetails memory fundDetails = allFundDetails[fundIndex];
 
-        // TODO: Check the evaluation function of trigger, pass the metadata.
-        require(
-            identifier == fundDetails.credentailsUsed,
-            "credential doesn't match"
-        );
+    //     // TODO: Check the evaluation function of trigger, pass the metadata.
+    //     require(
+    //         identifier == fundDetails.credentailsUsed,
+    //         "credential doesn't match"
+    //     );
 
-        require(
-            fundingTable[fundDetails.fundId][msg.sender] == 0,
-            "already withdrawn for this fund"
-        );
+    //     require(
+    //         fundingTable[fundDetails.fundId][msg.sender] == 0,
+    //         "already withdrawn for this fund"
+    //     );
 
-        require(
-            fundDetails.currentBalance > fundDetails.fundingAmount,
-            "not enough funds to withdraw"
-        );
+    //     require(
+    //         fundDetails.currentBalance > fundDetails.fundingAmount,
+    //         "not enough funds to withdraw"
+    //     );
 
-        // TODO: transfer is not secure? Use OZ Address?
-        payable(msg.sender).transfer(fundDetails.fundingAmount);
+    //     // TODO: transfer is not secure? Use OZ Address?
+    //     payable(msg.sender).transfer(fundDetails.fundingAmount);
 
-        fundDetails.currentBalance -= fundDetails.fundingAmount;
-        fundingTable[fundDetails.fundId][msg.sender] = fundDetails
-            .fundingAmount;
-        emit Funding(msg.sender, fundDetails.fundingAmount);
-    }
+    //     fundDetails.currentBalance -= fundDetails.fundingAmount;
+    //     fundingTable[fundDetails.fundId][msg.sender] = fundDetails
+    //         .fundingAmount;
+    //     emit Funding(msg.sender, fundDetails.fundingAmount);
+    // }
 }
