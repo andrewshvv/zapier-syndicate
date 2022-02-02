@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../Expression.sol";
+import {Expression, ExpressionCodec} from "../ExpressionCodec.sol";
+import {Node, NodeCodec} from "../NodeCodec.sol";
 
-contract DecodeExpression {
+contract TestDecodeExpression {
     using ExpressionCodec for Expression;
     Expression private exp;
     Node private node;

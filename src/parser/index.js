@@ -34,7 +34,10 @@ const Opcodes = Object.freeze({
  * in case the source of context will change from protobuf to something else.
  */
 class ExpressionParser {
-    constructor() {
+    constructor(is_first_logical = true, should_include_credential = true) {
+        this.is_first_logical = is_first_logical;
+        this.should_include_credential = should_include_credential;
+
         // Define shorcuts for "&&" and "||" operations
         jsep.addBinaryOp("or", 1);
         jsep.addBinaryOp("OR", 1);
@@ -109,11 +112,13 @@ class ExpressionParser {
         let checks = {}
         traverse(tree, null, context, true, true, this._build(this.opcodes, operands, checks));
 
-        if (!this.logical_opcodes.includes(operands[0]?.opcode)) {
+        if (this.is_first_logical &&
+            !this.logical_opcodes.includes(operands[0]?.opcode)) {
             throw new ParserUserError("Expression must return boolean");
         }
 
-        if (!checks.credential_used) {
+        if (this.should_include_credential &&
+            !checks.credential_used) {
             throw new ParserUserError("Expression must use at least one credential field");
         }
 

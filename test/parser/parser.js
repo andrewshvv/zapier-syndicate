@@ -4,7 +4,7 @@ const {expect} = require("chai");
 const path = require("path");
 
 describe("Parser", async () => {
-    it.only("parse expressions", async () => {
+    it("parse expressions", async () => {
         const protoFile = path.join(__dirname, "../../src/protobuf/credential.proto");
 
         let pc = new ProtobufContext();

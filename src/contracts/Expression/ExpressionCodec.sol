@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: CC0
 pragma solidity ^0.8.0;
 
-import "@lazyledger/protobuf3-solidity-lib/contracts/ProtobufLib.sol";
-import {Node, NodeCodec} from "./Node.sol";
+import {Node, NodeCodec} from "./NodeCodec.sol";
+import {ProtobufLib} from "@lazyledger/protobuf3-solidity-lib/contracts/ProtobufLib.sol";
 
     struct Expression {
         Node[] nodes;
@@ -151,8 +151,6 @@ library ExpressionCodec {
         }
 
         // Now actually parse the elements
-        console.log("COUNT");
-        console.log(cnt);
         pos = initial_pos;
         for (uint64 i = 0; i < cnt; i++) {
             uint64 len;

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import "./Expression.sol";
+import "./ExpressionCodec.sol";
+import "./NodeCodec.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 library Evaluator {
@@ -31,81 +32,80 @@ library Evaluator {
     {
         // First node represent the logical opcode, since the
         // end result of expression is always boolean
-        // return evaluateLogicalOpcode(e, context, 0);
-        return false;
+        return evaluateLogicalOpcode(e, context, 0);
     }
 
-    // function evaluateValueOpcode(
-    //     Node[] storage nodes,
-    //     uint32[] memory context,
-    //     uint32 idx
-    // ) private pure returns (int32) {
-    //     Node memory node = nodes[idx];
-    //     Opcode opcode = node.opcode;
+     function evaluateValueOpcode(
+         Expression storage e,
+         uint32[] memory context,
+         uint32 idx
+     ) private view returns (int32) {
+         Node memory node = e.nodes[idx];
+         Opcode opcode = node.opcode;
 
-    //     if (opcode == Opcode.OPCODE_CONST) {
-    //         return node.arguments[0];
-    //     } else if (opcode == Opcode.OPCODE_GVAL) {
-    //         uint32 offset = uint32(node.arguments[0]);
-    //         uint32 fieldID = uint32(node.arguments[1]);
-    //         return int32(context[offset + fieldID]);
-    //     }
+         if (opcode == Opcode.OPCODE_CONST) {
+             return node.arguments[0];
+         } else if (opcode == Opcode.OPCODE_GVAL) {
+             uint32 offset = uint32(node.arguments[0]);
+             uint32 fieldID = uint32(node.arguments[1]);
+             return int32(context[offset + fieldID]);
+         }
 
-    //     revert("invalid opcode");
-    // }
+         revert("invalid opcode");
+     }
 
-    // // evaluateLogicalOpcode...
-    // // @context are given in the properly sorted matter, i.e. in the order it will
-    // // be used in polish notation array.
-    // function evaluateLogicalOpcode(
-    //     Node[] storage nodes,
-    //     uint32[] memory context,
-    //     uint32 idx
-    // ) public pure returns (bool) {
-    //     Node memory node = nodes[idx];
-    //     Opcode opcode = node.opcode;
+     // evaluateLogicalOpcode...
+     // @context are given in the properly sorted matter, i.e. in the order it will
+     // be used in polish notation array.
+     function evaluateLogicalOpcode(
+         Expression storage e,
+         uint32[] memory context,
+         uint32 idx
+     ) public view returns (bool) {
+         Node memory node = e.nodes[idx];
+         Opcode opcode = node.opcode;
 
-    //     if (opcode == Opcode.OPCODE_NOT) {
-    //         return !evaluateLogicalOpcode(nodes, context, node.leafs[0]);
-    //     } else if (
-    //         opcode == Opcode.OPCODE_EQ ||
-    //         opcode == Opcode.OPCODE_GE ||
-    //         opcode == Opcode.OPCODE_NE ||
-    //         opcode == Opcode.OPCODE_LT ||
-    //         opcode == Opcode.OPCODE_GT
-    //     ) {
-    //         require(node.leafs.length == 2, "invalid number of leafs");
-    //         int32 arg0 = evaluateValueOpcode(nodes, context, node.leafs[0]);
-    //         int32 arg1 = evaluateValueOpcode(nodes, context, node.leafs[1]);
+         if (opcode == Opcode.OPCODE_NOT) {
+             return !evaluateLogicalOpcode(e, context, node.leafs[0]);
+         } else if (
+             opcode == Opcode.OPCODE_EQ ||
+             opcode == Opcode.OPCODE_GE ||
+             opcode == Opcode.OPCODE_NE ||
+             opcode == Opcode.OPCODE_LT ||
+             opcode == Opcode.OPCODE_GT
+         ) {
+             require(node.leafs.length == 2, "invalid number of leafs");
+             int32 arg0 = evaluateValueOpcode(e, context, node.leafs[0]);
+             int32 arg1 = evaluateValueOpcode(e, context, node.leafs[1]);
 
-    //         if (opcode == Opcode.OPCODE_EQ) {
-    //             return arg0 == arg1;
-    //         } else if (opcode == Opcode.OPCODE_NE) {
-    //             return arg0 != arg1;
-    //         } else if (opcode == Opcode.OPCODE_LT) {
-    //             return arg0 < arg1;
-    //         } else if (opcode == Opcode.OPCODE_GT) {
-    //             return arg0 > arg1;
-    //         } else if (opcode == Opcode.OPCODE_LE) {
-    //             return arg0 <= arg1;
-    //         } else if (opcode == Opcode.OPCODE_GE) {
-    //             return arg0 >= arg1;
-    //         }
-    //     } else if (opcode == Opcode.OPCODE_AND || opcode == Opcode.OPCODE_OR) {
-    //         bool arg0 = evaluateLogicalOpcode(nodes, context, node.leafs[0]);
+             if (opcode == Opcode.OPCODE_EQ) {
+                 return arg0 == arg1;
+             } else if (opcode == Opcode.OPCODE_NE) {
+                 return arg0 != arg1;
+             } else if (opcode == Opcode.OPCODE_LT) {
+                 return arg0 < arg1;
+             } else if (opcode == Opcode.OPCODE_GT) {
+                 return arg0 > arg1;
+             } else if (opcode == Opcode.OPCODE_LE) {
+                 return arg0 <= arg1;
+             } else if (opcode == Opcode.OPCODE_GE) {
+                 return arg0 >= arg1;
+             }
+         } else if (opcode == Opcode.OPCODE_AND || opcode == Opcode.OPCODE_OR) {
+             bool arg0 = evaluateLogicalOpcode(e, context, node.leafs[0]);
 
-    //         // Optimisation: short-circuit evaluation
-    //         if (opcode == Opcode.OPCODE_AND) {
-    //             if (!arg0) return false;
+             // Optimisation: short-circuit evaluation
+             if (opcode == Opcode.OPCODE_AND) {
+                 if (!arg0) return false;
 
-    //             return evaluateLogicalOpcode(nodes, context, node.leafs[1]);
-    //         } else if (opcode == Opcode.OPCODE_OR) {
-    //             if (arg0) return true;
+                 return evaluateLogicalOpcode(e, context, node.leafs[1]);
+             } else if (opcode == Opcode.OPCODE_OR) {
+                 if (arg0) return true;
 
-    //             return evaluateLogicalOpcode(nodes, context, node.leafs[1]);
-    //         }
-    //     }
+                 return evaluateLogicalOpcode(e, context, node.leafs[1]);
+             }
+         }
 
-    //     revert("invalid opcode");
-    // }
+         revert("invalid opcode");
+     }
 }

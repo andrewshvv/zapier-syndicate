@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@lazyledger/protobuf3-solidity-lib/contracts/ProtobufLib.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "./Codec.sol";
+import "./CredentialCodec.sol";
 import "./Credentials.sol";
-import "./Expression/Expression.sol";
+import "./Expression/ExpressionCodec.sol";
 import "./Expression/Evaluator.sol";
 
 contract Trigger {
